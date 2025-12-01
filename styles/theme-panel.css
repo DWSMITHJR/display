@@ -16,18 +16,74 @@
         0 2px 8px rgba(0, 0, 0, 0.2),
         inset 0 1px 0 rgba(255, 255, 255, 0.1);
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: 8px;
     font-size: 12px;
     cursor: move;
     -webkit-user-select: none;
     user-select: none;
-    transition: all 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     min-width: 160px;
     max-width: 200px;
     opacity: 0.9;
     height: auto;
     overflow: visible;
+}
+
+/* Minimized state */
+.style-selector.minimized {
+    padding: 4px 6px;
+    min-width: auto;
+    max-width: auto;
+    gap: 0;
+}
+
+.style-selector.minimized .theme-content {
+    display: none;
+}
+
+.style-selector.minimized .style-selector-label {
+    font-size: 8px;
+    padding: 2px;
+}
+
+/* Minimize button */
+.minimize-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    z-index: 1002;
+}
+
+.minimize-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 1);
+    transform: scale(1.1);
+}
+
+.style-selector.minimized .minimize-btn {
+    top: 2px;
+    right: 2px;
+}
+
+.theme-content {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: all 0.3s ease;
 }
 
 .style-selector:hover {
@@ -78,6 +134,7 @@
     height: auto;
     overflow: visible;
     opacity: 0.9;
+    position: relative;
 }
 
 .style-selector select {
@@ -185,7 +242,14 @@
 
 .theme-controls {
     display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.control-row {
+    display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 4px;
 }
 
@@ -205,6 +269,7 @@
     background: rgba(255, 255, 255, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.15);
     opacity: 0.8;
+    flex: 1;
 }
 
 .auto-rotate-label:hover {
@@ -228,6 +293,26 @@
     box-shadow: 0 0 3px rgba(76, 175, 80, 0.5);
 }
 
+/* Auto-rotate status indicator */
+.auto-rotate-status {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+}
+
+.auto-rotate-status.active {
+    background: rgba(76, 175, 80, 0.9);
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.6);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
 /* Fullscreen mode */
 body.fullscreen .style-selector {
     opacity: 0.3;
@@ -247,6 +332,10 @@ body.fullscreen .style-selector:hover {
         max-width: 140px;
         padding: 4px 6px;
         font-size: 10px;
+    }
+    
+    .style-selector.minimized {
+        padding: 2px 4px;
     }
     
     .style-selector select {
@@ -271,5 +360,11 @@ body.fullscreen .style-selector:hover {
     .auto-rotate-label input[type="checkbox"] {
         width: 8px;
         height: 8px;
+    }
+    
+    .minimize-btn {
+        width: 10px;
+        height: 10px;
+        font-size: 6px;
     }
 }

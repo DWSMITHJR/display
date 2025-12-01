@@ -33,38 +33,43 @@
     </style>
 </head>
 <body>
+    <!-- Theme Panel with Minimize Functionality -->
     <div id="theme-panel" class="style-selector">
-        <div class="style-selector-label">Themes</div>
+        <button class="minimize-btn" id="minimize-btn" title="Minimize/Maximize theme panel">−</button>
+        <div class="style-selector-label drag-handle">Themes</div>
         
-        <select id="style-dropdown" title="Select a theme">
-            <option value="style.css">Original</option>
-            <option value="styles/dark.css">Dark</option>
-            <option value="styles/ocean.css">Ocean</option>
-            <option value="styles/sunset.css">Sunset</option>
-            <option value="styles/forest.css">Forest</option>
-            <option value="styles/cyberpunk.css">Cyberpunk</option>
-            <option value="styles/galaxy.css">Galaxy</option>
-            <option value="styles/aurora.css">Aurora</option>
-            <option value="styles/vintage.css">Vintage</option>
-            <option value="styles/minimal.css">Minimal</option>
-            <option value="styles/neon.css">Neon</option>
-            <option value="styles/candy.css">Candy</option>
-        </select>
-        
-        <div class="theme-controls">
-            <div class="control-row">
-                <label for="auto-rotate" class="auto-rotate-label">
-                    <input type="checkbox" id="auto-rotate" title="Auto-rotate themes every 30 seconds">
-                    Auto-rotate
-                </label>
-            </div>
-            <div class="control-row">
-                <a href="README.md" target="_blank" class="readme-link" title="Open Documentation (README)">
-                    📖
-                </a>
-                <button id="fullscreen-toggle" class="fullscreen-btn" title="Toggle Fullscreen (F)">
-                    <span id="fullscreen-icon">⛶</span>
-                </button>
+        <div class="theme-content">
+            <select id="style-dropdown" title="Select a theme">
+                <option value="style.css">Original</option>
+                <option value="styles/dark.css">Dark</option>
+                <option value="styles/ocean.css">Ocean</option>
+                <option value="styles/sunset.css">Sunset</option>
+                <option value="styles/forest.css">Forest</option>
+                <option value="styles/cyberpunk.css">Cyberpunk</option>
+                <option value="styles/galaxy.css">Galaxy</option>
+                <option value="styles/aurora.css">Aurora</option>
+                <option value="styles/vintage.css">Vintage</option>
+                <option value="styles/minimal.css">Minimal</option>
+                <option value="styles/neon.css">Neon</option>
+                <option value="styles/candy.css">Candy</option>
+            </select>
+            
+            <div class="theme-controls">
+                <div class="control-row">
+                    <label for="auto-rotate" class="auto-rotate-label">
+                        <input type="checkbox" id="auto-rotate" title="Auto-rotate themes every 30 seconds">
+                        <span>Auto-rotate</span>
+                        <div class="auto-rotate-status" id="auto-rotate-status"></div>
+                    </label>
+                </div>
+                <div class="control-row">
+                    <a href="README.md" target="_blank" class="readme-link" title="Open Documentation (README)" rel="noopener noreferrer">
+                        📖
+                    </a>
+                    <button id="fullscreen-toggle" class="fullscreen-btn" title="Toggle Fullscreen (F)" type="button">
+                        <span id="fullscreen-icon">⛶</span>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

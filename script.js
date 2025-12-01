@@ -83,11 +83,16 @@ class StatusDisplay {
         const mainStyle = document.getElementById('main-style');
         const themePanel = document.getElementById('theme-panel');
         const autoRotateCheckbox = document.getElementById('auto-rotate');
+        const minimizeBtn = document.getElementById('minimize-btn');
+        const autoRotateStatus = document.getElementById('auto-rotate-status');
         
         if (!styleDropdown || !mainStyle) return;
         
         // Initialize drag functionality for theme panel
         this.initDraggablePanel(themePanel);
+        
+        // Initialize minimize functionality
+        this.initMinimizeFunctionality(themePanel, minimizeBtn);
         
         // Load saved style
         const savedStyle = localStorage.getItem('selectedStyle');
@@ -109,6 +114,13 @@ class StatusDisplay {
             if (savedAutoRotate) {
                 this.startAutoRotate();
             }
+            this.updateAutoRotateStatus(savedAutoRotate);
+        }
+        
+        // Load minimized state
+        const savedMinimized = localStorage.getItem('themePanelMinimized') === 'true';
+        if (savedMinimized && minimizeBtn) {
+            this.toggleMinimize(themePanel, minimizeBtn);
         }
         
         // Handle style changes
@@ -121,6 +133,7 @@ class StatusDisplay {
                 autoRotateCheckbox.checked = false;
                 localStorage.setItem('autoRotateThemes', 'false');
                 this.stopAutoRotate();
+                this.updateAutoRotateStatus(false);
                 this.showNotification(`Switched to ${this.getThemeName(e.target.value)} theme (auto-rotation stopped)`);
                 console.log('Auto-rotation stopped due to manual theme selection');
             } else {
@@ -133,6 +146,7 @@ class StatusDisplay {
             autoRotateCheckbox.addEventListener('change', (e) => {
                 const isChecked = e.target.checked;
                 localStorage.setItem('autoRotateThemes', isChecked);
+                this.updateAutoRotateStatus(isChecked);
                 
                 if (isChecked) {
                     this.startAutoRotate();
@@ -145,6 +159,50 @@ class StatusDisplay {
 
 
 
+    initMinimizeFunctionality(themePanel, minimizeBtn) {
+        if (!minimizeBtn || !themePanel) return;
+        
+        minimizeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            this.toggleMinimize(themePanel, minimizeBtn);
+        });
+        
+        console.log('Minimize functionality initialized');
+    }
+    
+    toggleMinimize(themePanel, minimizeBtn) {
+        if (!themePanel || !minimizeBtn) return;
+        
+        const isMinimized = themePanel.classList.contains('minimized');
+        
+        if (isMinimized) {
+            // Maximize
+            themePanel.classList.remove('minimized');
+            minimizeBtn.textContent = '−';
+            minimizeBtn.title = 'Minimize theme panel';
+            localStorage.setItem('themePanelMinimized', 'false');
+            console.log('Theme panel maximized');
+        } else {
+            // Minimize
+            themePanel.classList.add('minimized');
+            minimizeBtn.textContent = '+';
+            minimizeBtn.title = 'Maximize theme panel';
+            localStorage.setItem('themePanelMinimized', 'true');
+            console.log('Theme panel minimized');
+        }
+    }
+    
+    updateAutoRotateStatus(isActive) {
+        const statusElement = document.getElementById('auto-rotate-status');
+        if (statusElement) {
+            if (isActive) {
+                statusElement.classList.add('active');
+            } else {
+                statusElement.classList.remove('active');
+            }
+        }
+    }
+    
     initDraggablePanel(panel) {
         if (!panel) {
             console.log('Theme panel not found');
@@ -614,6 +672,9 @@ class StatusDisplay {
         // Show notification that rotation is starting
         this.showNotification('Theme rotation started (30s intervals)');
         
+        // Update status
+        this.updateAutoRotateStatus(true);
+        
         // Ensure text is not cropped before starting rotation
         this.ensureTextNotCropped();
         
@@ -812,6 +873,7 @@ class StatusDisplay {
             console.log('Stopping theme auto-rotation');
             clearInterval(this.autoRotateInterval);
             this.autoRotateInterval = null;
+            this.updateAutoRotateStatus(false);
             this.showNotification('Theme rotation stopped');
         }
     }
