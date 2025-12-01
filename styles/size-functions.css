@@ -3,10 +3,10 @@
 :root {
     --panel-scale: 1.5;
     
-    /* Typography Sizes - Increased to 90% */
-    --title-size-min: 7.2rem;      /* 8rem * 0.9 */
-    --title-size-vh: 16.2vh;       /* 18vh * 0.9 */
-    --title-size-max: 19.8rem;     /* 22rem * 0.9 */
+    /* Typography Sizes - Increased to 100% */
+    --title-size-min: 8rem;         /* Increased from 7.2rem */
+    --title-size-vh: 18vh;          /* Increased from 16.2vh */
+    --title-size-max: 22rem;        /* Increased from 19.8rem */
     
     --subtitle-size-min: 1.76rem;  /* 1.95rem * 0.9 */
     --subtitle-size-vh: 5.85vh;    /* 6.5vh * 0.9 */
