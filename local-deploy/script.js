@@ -32,9 +32,6 @@ class StatusDisplay {
         // Add window resize listener for dynamic adjustment
         this.initResponsiveHandling();
         
-        // Add keyboard shortcuts
-        this.initKeyboardShortcuts();
-        
         // Update every second
         setInterval(() => this.updateAll(), 1000);
         
@@ -85,13 +82,6 @@ class StatusDisplay {
         const savedStyle = localStorage.getItem('selectedStyle');
         if (savedStyle && this.validateStylePath(savedStyle)) {
             this.applyStyle(savedStyle, styleDropdown, mainStyle);
-            // Sync currentThemeIndex with loaded theme
-            this.currentThemeIndex = this.themes.indexOf(savedStyle);
-            console.log('Loaded saved theme:', savedStyle, 'at index:', this.currentThemeIndex);
-        } else {
-            // Set currentThemeIndex to default theme (first in array)
-            this.currentThemeIndex = 0;
-            console.log('Using default theme at index:', this.currentThemeIndex);
         }
         
         // Load auto-rotate setting
@@ -369,58 +359,27 @@ class StatusDisplay {
             // Show loading state
             this.setWeatherLoading();
             
-            // Atlanta (ZIP 30318) coordinates with fallback locations
-            const locations = [
-                { lat: 33.8026, lon: -84.3984, name: 'Atlanta, GA' },
-                { lat: 40.7128, lon: -74.0060, name: 'New York, NY' },
-                { lat: 51.5074, lon: -0.1278, name: 'London, UK' }
-            ];
+            // Atlanta (ZIP 30318) coordinates
+            const lat = 33.8026;
+            const lon = -84.3984;
+            const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,windspeed_10m,pressure_msl,uv_index,visibility,weathercode&temperature_unit=fahrenheit&windspeed_unit=mph&pressure_unit_inhg&precipitation_unit=inch&timezone=America%2FNew_York`;
             
-            let weatherData = null;
-            let lastError = null;
+            console.log('Fetching weather from:', weatherUrl);
             
-            // Try each location until one succeeds
-            for (const location of locations) {
-                try {
-                    const weatherUrl = `https://api.open-meteo.com/v1/forecast?latitude=${location.lat}&longitude=${location.lon}&current_weather=true&hourly=apparent_temperature,relativehumidity_2m,windspeed_10m,pressure_msl,uv_index,visibility,weathercode&temperature_unit=fahrenheit&windspeed_unit=mph&pressure_unit_inhg&precipitation_unit=inch&timezone=America%2FNew_York`;
-                    
-                    console.log(`Fetching weather from ${location.name}:`, weatherUrl);
-                    
-                    const response = await fetch(weatherUrl, {
-                        timeout: 10000, // 10 second timeout
-                        headers: {
-                            'User-Agent': 'AtomicClockDisplay/2.0.0'
-                        }
-                    });
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    
-                    const data = await response.json();
-                    console.log(`Weather data received from ${location.name}:`, data);
-                    
-                    weatherData = this.parseWeatherResponse(data);
-                    weatherData.location = location.name;
-                    weatherData.timestamp = new Date().toISOString();
-                    
-                    console.log('Parsed weather data:', weatherData);
-                    break; // Success, exit loop
-                    
-                } catch (error) {
-                    console.warn(`Failed to fetch weather from ${location.name}:`, error);
-                    lastError = error;
-                    continue; // Try next location
-                }
+            const response = await fetch(weatherUrl);
+            
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
             
-            if (weatherData) {
-                this.weatherData = weatherData;
-                this.updateWeatherDisplay();
-                console.log('Weather display updated successfully');
-            } else {
-                throw lastError || new Error('All weather locations failed');
-            }
+            const data = await response.json();
+            console.log('Weather data received:', data);
+            
+            this.weatherData = this.parseWeatherResponse(data);
+            console.log('Parsed weather data:', this.weatherData);
+            
+            this.updateWeatherDisplay();
+            console.log('Weather display updated successfully');
             
         } catch (error) {
             console.error('Weather update failed:', error);
@@ -589,20 +548,6 @@ class StatusDisplay {
         console.log('Starting theme auto-rotation');
         this.stopAutoRotate(); // Clear any existing interval
         
-        // Sync currentThemeIndex with currently selected theme
-        const styleDropdown = document.getElementById('style-dropdown');
-        if (styleDropdown) {
-            const currentTheme = styleDropdown.value;
-            const currentIndex = this.themes.indexOf(currentTheme);
-            if (currentIndex !== -1) {
-                this.currentThemeIndex = currentIndex;
-                console.log('Synced currentThemeIndex to:', this.currentThemeIndex, 'for theme:', currentTheme);
-            } else {
-                console.log('Current theme not found in themes array, using index 0');
-                this.currentThemeIndex = 0;
-            }
-        }
-        
         // Show notification that rotation is starting
         this.showNotification('Theme rotation started (30s intervals)');
         
@@ -617,10 +562,10 @@ class StatusDisplay {
             // Double-check that auto-rotate is still enabled before switching
             if (autoRotateCheckbox && autoRotateCheckbox.checked && styleDropdown && mainStyle) {
                 this.applyStyle(nextTheme, styleDropdown, mainStyle);
-                console.log('Auto-rotated to theme:', nextTheme, '(index:', this.currentThemeIndex, ')');
+                console.log('Auto-rotated to theme:', nextTheme);
                 
                 // Show subtle notification for theme change (only in test mode or if debug is enabled)
-                if (window.location.search.includes('debug=true') || window.location.hostname === 'localhost') {
+                if (window.location.search.includes('debug=true')) {
                     this.showNotification(`Theme: ${this.getThemeName(nextTheme)}`);
                 }
             } else {
@@ -629,7 +574,7 @@ class StatusDisplay {
             }
         }, 30000); // Rotate every 30 seconds
         
-        console.log('Auto-rotation started with 30-second intervals from index:', this.currentThemeIndex);
+        console.log('Auto-rotation started with 30-second intervals');
     }
 
     stopAutoRotate() {
@@ -639,45 +584,6 @@ class StatusDisplay {
             this.autoRotateInterval = null;
             this.showNotification('Theme rotation stopped');
         }
-    }
-
-    // Debug function for testing auto-rotate with shorter interval
-    startAutoRotateDebug() {
-        console.log('Starting DEBUG theme auto-rotation (5-second intervals)');
-        this.stopAutoRotate(); // Clear any existing interval
-        
-        // Sync currentThemeIndex with currently selected theme
-        const styleDropdown = document.getElementById('style-dropdown');
-        if (styleDropdown) {
-            const currentTheme = styleDropdown.value;
-            const currentIndex = this.themes.indexOf(currentTheme);
-            if (currentIndex !== -1) {
-                this.currentThemeIndex = currentIndex;
-                console.log('DEBUG: Synced currentThemeIndex to:', this.currentThemeIndex, 'for theme:', currentTheme);
-            }
-        }
-        
-        this.showNotification('DEBUG: Theme rotation started (5s intervals)');
-        
-        this.autoRotateInterval = setInterval(() => {
-            this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
-            const nextTheme = this.themes[this.currentThemeIndex];
-            
-            const styleDropdown = document.getElementById('style-dropdown');
-            const mainStyle = document.getElementById('main-style');
-            const autoRotateCheckbox = document.getElementById('auto-rotate');
-            
-            if (autoRotateCheckbox && autoRotateCheckbox.checked && styleDropdown && mainStyle) {
-                this.applyStyle(nextTheme, styleDropdown, mainStyle);
-                console.log('DEBUG: Auto-rotated to theme:', nextTheme, '(index:', this.currentThemeIndex, ')');
-                this.showNotification(`DEBUG: ${this.getThemeName(nextTheme)}`);
-            } else {
-                console.log('DEBUG: Auto-rotation disabled or elements missing, stopping rotation');
-                this.stopAutoRotate();
-            }
-        }, 5000); // Rotate every 5 seconds for debugging
-        
-        console.log('DEBUG: Auto-rotation started with 5-second intervals from index:', this.currentThemeIndex);
     }
 
     getThemeName(themePath) {
@@ -730,47 +636,6 @@ class StatusDisplay {
         // Initial adjustment
         this.adjustThemePanelPosition();
         this.applyResponsiveAdjustments();
-    }
-
-    initKeyboardShortcuts() {
-        document.addEventListener('keydown', (e) => {
-            // Only process shortcuts when not typing in input fields
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-                return;
-            }
-
-            switch(e.key.toLowerCase()) {
-                case 't':
-                    e.preventDefault();
-                    this.cycleTheme();
-                    console.log('Keyboard: Cycled theme (T key)');
-                    break;
-                case 'f':
-                    e.preventDefault();
-                    this.toggleFullscreen();
-                    console.log('Keyboard: Toggled fullscreen (F key)');
-                    break;
-                case 'r':
-                    e.preventDefault();
-                    this.updateWeather();
-                    this.showNotification('Weather refreshed');
-                    console.log('Keyboard: Refreshed weather (R key)');
-                    break;
-            }
-        });
-
-        console.log('Keyboard shortcuts initialized: T (themes), F (fullscreen), R (refresh weather)');
-    }
-
-    toggleFullscreen() {
-        if (!document.fullscreenElement) {
-            document.documentElement.requestFullscreen().catch(err => {
-                console.log('Error attempting to enable fullscreen:', err);
-                this.showNotification('Could not enter fullscreen');
-            });
-        } else {
-            document.exitFullscreen();
-        }
     }
 
     adjustThemePanelPosition() {
@@ -866,37 +731,6 @@ class StatusDisplay {
         setTimeout(() => {
             notification.style.opacity = '0';
         }, 3000);
-    }
-
-    // Add missing changeTheme method
-    changeTheme(themePath) {
-        const styleDropdown = document.getElementById('style-dropdown');
-        const mainStyle = document.getElementById('main-style');
-        
-        if (styleDropdown && mainStyle) {
-            this.applyStyle(themePath, styleDropdown, mainStyle);
-            this.currentThemeIndex = this.themes.indexOf(themePath);
-            
-            // Update dropdown to match
-            styleDropdown.value = themePath;
-            
-            // Save to localStorage
-            localStorage.setItem('selectedStyle', themePath);
-            
-            console.log('Changed to theme:', themePath);
-        }
-    }
-
-    // Add missing cycleTheme method
-    cycleTheme() {
-        this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
-        const nextTheme = this.themes[this.currentThemeIndex];
-        this.changeTheme(nextTheme);
-        
-        // Show notification
-        this.showNotification(`Theme: ${this.getThemeName(nextTheme)}`);
-        
-        console.log('Cycled to theme:', nextTheme);
     }
 }
 

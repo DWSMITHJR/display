@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Clock & Weather Display - Optimized</title>
+    <link rel="stylesheet" href="style.css" id="main-style">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Kiosk-specific meta tags -->
+    <meta http-equiv="refresh" content="72001">
+    <meta name="description" content="Professional atomic clock and weather display for kiosk and dashboard applications">
+    
+    <!-- Favicon for kiosk displays -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕐</text></svg>">
+    
+    <!-- Fullscreen capability for kiosks -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    
+    <!-- Prevent zoom on mobile kiosks via CSS instead -->
+    <style>
+        @media (pointer: coarse) {
+            body {
+                touch-action: manipulation;
+                -webkit-touch-callout: none;
+                -webkit-user-select: none;
+                user-select: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="theme-panel" class="style-selector">
+        <div class="style-selector-label">Themes</div>
+        
+        <select id="style-dropdown" title="Select a theme">
+            <option value="style.css">Original</option>
+            <option value="styles/dark.css">Dark</option>
+            <option value="styles/ocean.css">Ocean</option>
+            <option value="styles/sunset.css">Sunset</option>
+            <option value="styles/forest.css">Forest</option>
+            <option value="styles/cyberpunk.css">Cyberpunk</option>
+            <option value="styles/galaxy.css">Galaxy</option>
+            <option value="styles/aurora.css">Aurora</option>
+            <option value="styles/vintage.css">Vintage</option>
+            <option value="styles/minimal.css">Minimal</option>
+            <option value="styles/neon.css">Neon</option>
+            <option value="styles/candy.css">Candy</option>
+        </select>
+        
+        <div class="theme-controls">
+            <div class="control-row">
+                <label for="auto-rotate" class="auto-rotate-label">
+                    <input type="checkbox" id="auto-rotate" title="Auto-rotate themes every 30 seconds">
+                    Auto-rotate
+                </label>
+            </div>
+            <div class="control-row">
+                <a href="README.md" target="_blank" class="readme-link" title="Open Documentation (README)">
+                    📖
+                </a>
+                <button id="fullscreen-toggle" class="fullscreen-btn" title="Toggle Fullscreen (F)">
+                    <span id="fullscreen-icon">⛶</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <header class="day-display">
+            <h1 id="day-name">Loading...</h1>
+            <p id="time-period">Morning</p>
+        </header>
+        
+        <main class="content">
+            <section class="time-section">
+                <div class="status-time">
+                    <div id="time-display" class="time">00:00:00</div>
+                    <div id="date-display" class="date">Loading...</div>
+                    <div id="timezone-display" class="timezone">Local Time</div>
+                    <div id="city-display" class="city">Loading...</div>
+                </div>
+            </section>
+            
+            <section class="weather-section">
+                <div class="weather-display">
+                    <div class="weather-main">
+                        <div id="weather-icon" class="weather-icon">🌤️</div>
+                        <div id="temperature" class="temperature">--°F</div>
+                        <div class="weather-info">
+                            <div id="weather-description" class="weather-description">Loading weather...</div>
+                            <div id="location" class="location">Detecting location...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Compact Weather Details -->
+                    <div class="weather-details">
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">🌡️</span>
+                            <span id="feels-like" class="weather-detail-value">--°F</span>
+                            <span class="weather-detail-label">💧</span>
+                            <span id="humidity" class="weather-detail-value">--%</span>
+                        </div>
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">💨</span>
+                            <span id="wind-speed" class="weather-detail-value">-- mph</span>
+                            <span class="weather-detail-label">👁️</span>
+                            <span id="visibility" class="weather-detail-value">-- mi</span>
+                        </div>
+                    </div>
+                    
+                    <div id="weather-update-time" class="weather-update-time"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="theme-preloader.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
