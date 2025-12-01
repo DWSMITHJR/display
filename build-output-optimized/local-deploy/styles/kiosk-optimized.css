@@ -1,0 +1,336 @@
+/* Kiosk-Optimized Layout - Enterprise Display System */
+
+/* Kiosk-specific viewport and layout optimizations */
+@media (min-width: 1200px) {
+    
+    /* Enhanced container for kiosk displays */
+    .container {
+        padding: 3vh 4vw;
+        gap: 3vh;
+        max-height: 100vh;
+        max-width: 100vw;
+        box-sizing: border-box;
+    }
+    
+    /* Optimized day display for large screens */
+    .day-display {
+        flex-shrink: 0;
+        max-height: 45vh;
+        padding: 2vh 0;
+        margin-bottom: 1vh;
+    }
+    
+    .day-display h1 {
+        font-size: clamp(calc(var(--title-size-min) * 1.8), calc(var(--title-size-vh) * 1.8), calc(var(--title-size-max) * 1.8));
+        font-weight: 200;
+        text-shadow: 0 15px 60px rgba(0, 0, 0, 0.8);
+        margin-bottom: 1vh;
+        line-height: 0.9;
+        letter-spacing: -0.02em;
+    }
+    
+    .day-display p {
+        font-size: clamp(calc(var(--subtitle-size-min) * 1.6), calc(var(--subtitle-size-vh) * 1.6), calc(var(--subtitle-size-max) * 1.6));
+        font-weight: 300;
+        opacity: 0.95;
+        text-shadow: 0 8px 30px rgba(0, 0, 0, 0.6);
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+    
+    /* Enhanced content layout for kiosk */
+    .content {
+        flex: 1;
+        display: flex;
+        gap: 4vw;
+        min-height: 0;
+        max-height: 55vh;
+    }
+    
+    /* Optimized time section for kiosk */
+    .time-section {
+        flex: 1.5;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Enhanced time panel for large displays */
+    .status-time {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.15);
+        -webkit-backdrop-filter: blur(30px);
+        backdrop-filter: blur(30px);
+        border-radius: 30px;
+        padding: 4vh 3vw;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-bottom: 12px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    /* Kiosk-optimized time display */
+    .time {
+        font-size: clamp(calc(var(--time-size-min) * 1.6), calc(var(--time-size-vh) * 1.6), calc(var(--time-size-max) * 1.6));
+        font-weight: 200;
+        text-shadow: 0 12px 50px rgba(0, 0, 0, 0.7);
+        margin-bottom: 1.5vh;
+        white-space: nowrap;
+        letter-spacing: -0.01em;
+        line-height: 1;
+    }
+    
+    .date {
+        font-size: clamp(calc(var(--date-size-min) * 1.4), calc(var(--date-size-vh) * 1.4), calc(var(--date-size-max) * 1.4));
+        font-weight: 300;
+        opacity: 0.95;
+        margin-bottom: 1vh;
+        text-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+    }
+    
+    .timezone {
+        font-size: clamp(calc(var(--timezone-size-min) * 1.3), calc(var(--timezone-size-vh) * 1.3), calc(var(--timezone-size-max) * 1.3));
+        font-weight: 400;
+        opacity: 0.85;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+    
+    .city {
+        font-size: clamp(calc(1.5rem * var(--panel-scale)), calc(3.5vh * var(--panel-scale)), calc(2.2rem * var(--panel-scale)));
+        font-weight: 600;
+        opacity: 0.9;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        margin-top: 0.5vh;
+        color: rgba(255, 255, 255, 0.95);
+    }
+    
+    /* Optimized weather section for kiosk */
+    .weather-section {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    /* Enhanced weather display for large screens */
+    .weather-display {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.15);
+        -webkit-backdrop-filter: blur(30px);
+        backdrop-filter: blur(30px);
+        border-radius: 30px;
+        padding: 3vh 2.5vw;
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        border-bottom: 12px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), inset 0 2px 0 rgba(255, 255, 255, 0.3);
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    
+    /* Kiosk-optimized weather elements */
+    .weather-main {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        width: 100%;
+    }
+    
+    .weather-icon {
+        font-size: clamp(calc(var(--weather-icon-size-min) * 1.8), calc(var(--weather-icon-size-vh) * 1.8), calc(var(--weather-icon-size-max) * 1.8));
+        margin-bottom: 1.5vh;
+        filter: drop-shadow(0 6px 25px rgba(0, 0, 0, 0.4));
+        animation: float 4s ease-in-out infinite;
+    }
+    
+    @keyframes float {
+        0%, 100% { transform: translateY(0px); }
+        50% { transform: translateY(-8px); }
+    }
+    
+    .temperature {
+        font-size: clamp(calc(var(--temperature-size-min) * 1.6), calc(var(--temperature-size-vh) * 1.6), calc(var(--temperature-size-max) * 1.6));
+        font-weight: 200;
+        text-shadow: 0 12px 50px rgba(0, 0, 0, 0.7);
+        margin-bottom: 1vh;
+        letter-spacing: -0.01em;
+        line-height: 1;
+    }
+    
+    .weather-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5vh;
+        margin-top: 1vh;
+    }
+    
+    .weather-description {
+        font-size: clamp(calc(1.2rem * var(--panel-scale)), calc(3vh * var(--panel-scale)), calc(2rem * var(--panel-scale)));
+        font-weight: 300;
+        opacity: 0.95;
+        text-transform: capitalize;
+        text-shadow: 0 6px 25px rgba(0, 0, 0, 0.5);
+    }
+    
+    .location {
+        font-size: clamp(calc(1.1rem * var(--panel-scale)), calc(2.5vh * var(--panel-scale)), calc(1.8rem * var(--panel-scale)));
+        font-weight: 400;
+        opacity: 0.9;
+        text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+    }
+    
+    .location::before {
+        content: "📍";
+        font-size: 0.9em;
+    }
+    
+    /* Enhanced weather details for kiosk */
+    .weather-details {
+        margin-top: 1.5vh;
+        padding-top: 1.5vh;
+        border-top: 2px solid rgba(255, 255, 255, 0.3);
+        font-size: clamp(0.9rem, 2vh, 1.2rem);
+        opacity: 0.95;
+        text-shadow: 0 3px 10px rgba(0, 0, 0, 0.4);
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.6vh;
+    }
+    
+    .weather-detail-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.3vh 0;
+    }
+    
+    .weather-detail-label {
+        font-weight: 400;
+        opacity: 0.8;
+        display: flex;
+        align-items: center;
+        gap: 0.5vw;
+    }
+    
+    .weather-detail-value {
+        font-weight: 600;
+        text-shadow: 0 3px 6px rgba(0, 0, 0, 0.4);
+    }
+    
+    .weather-update-time {
+        font-size: 0.8rem;
+        opacity: 0.7;
+        margin-top: 0.8vh;
+        font-style: italic;
+    }
+    
+    /* Kiosk-specific hover effects */
+    .status-time:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    }
+    
+    .weather-display:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6), inset 0 2px 0 rgba(255, 255, 255, 0.4);
+    }
+}
+
+/* Ultra-wide display optimization (32:9 aspect ratio) */
+@media (min-width: 2560px) and (min-height: 1080px) {
+    .container {
+        padding: 2vh 6vw;
+        gap: 2vh;
+    }
+    
+    .content {
+        gap: 6vw;
+        max-width: 80vw;
+        margin: 0 auto;
+    }
+    
+    .day-display h1 {
+        font-size: clamp(8rem, 20vh, 24rem);
+    }
+    
+    .time {
+        font-size: clamp(6rem, 15vh, 18rem);
+    }
+    
+    .temperature {
+        font-size: clamp(5rem, 12vh, 15rem);
+    }
+}
+
+/* Portrait kiosk displays */
+@media (min-width: 1080px) and (min-height: 1920px) {
+    .container {
+        padding: 4vh 3vw;
+        gap: 4vh;
+    }
+    
+    .day-display {
+        max-height: 40vh;
+    }
+    
+    .content {
+        flex-direction: column;
+        gap: 3vh;
+        max-height: 60vh;
+    }
+    
+    .time-section,
+    .weather-section {
+        flex: 1;
+        width: 100%;
+    }
+    
+    .day-display h1 {
+        font-size: clamp(6rem, 15vh, 18rem);
+    }
+    
+    .time {
+        font-size: clamp(4rem, 10vh, 12rem);
+    }
+    
+    .temperature {
+        font-size: clamp(3.5rem, 8vh, 10rem);
+    }
+}
+
+/* Touch interface optimization for kiosk */
+@media (pointer: coarse) and (min-width: 1200px) {
+    .status-time,
+    .weather-display {
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .status-time:active,
+    .weather-display:active {
+        transform: scale(0.98);
+    }
+    
+    .style-selector select,
+    .style-selector button {
+        min-height: 44px;
+        font-size: 16px;
+    }
+}

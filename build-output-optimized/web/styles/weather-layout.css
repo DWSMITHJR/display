@@ -1,0 +1,198 @@
+/* Optimized Weather Layout - Professional Panel Design */
+
+/* Weather display with improved layout */
+.weather-display {
+    text-align: center;
+    background: rgba(255, 255, 255, 0.12);
+    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(25px);
+    border-radius: 25px;
+    padding: 2rem;
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-bottom: 10px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Main weather content section */
+.weather-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    width: 100%;
+}
+
+/* Animated weather icon */
+.weather-icon {
+    font-size: clamp(calc(var(--weather-icon-size-min) * var(--panel-scale)), calc(var(--weather-icon-size-vh) * var(--panel-scale)), calc(var(--weather-icon-size-max) * var(--panel-scale)));
+    margin-bottom: 1rem;
+    filter: drop-shadow(0 4px 20px rgba(0, 0, 0, 0.3));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Temperature display */
+.temperature {
+    font-size: clamp(calc(var(--temperature-size-min) * var(--panel-scale)), calc(var(--temperature-size-vh) * var(--panel-scale)), calc(var(--temperature-size-max) * var(--panel-scale)));
+    font-weight: 200;
+    text-shadow: 0 8px 35px rgba(0, 0, 0, 0.6);
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.01em;
+    line-height: 1;
+}
+
+/* Weather info container */
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 0.5rem;
+}
+
+/* Weather description */
+.weather-description {
+    font-size: clamp(calc(1rem * var(--panel-scale)), calc(2.5vh * var(--panel-scale)), calc(1.8rem * var(--panel-scale)));
+    font-weight: 300;
+    opacity: 0.95;
+    text-transform: capitalize;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+}
+
+/* Location with pin icon */
+.location {
+    font-size: clamp(calc(0.9rem * var(--panel-scale)), calc(2vh * var(--panel-scale)), calc(1.5rem * var(--panel-scale)));
+    font-weight: 400;
+    opacity: 0.9;
+    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.location::before {
+    content: "📍";
+    font-size: 0.8em;
+}
+
+/* Weather details section */
+.weather-details {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    font-size: clamp(0.7rem, 1.8vh, 1rem);
+    opacity: 0.95;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+/* Individual weather detail rows */
+.weather-detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.2rem 0;
+}
+
+/* Weather detail labels with icons */
+.weather-detail-label {
+    font-weight: 400;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+/* Weather detail values */
+.weather-detail-value {
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Weather update timestamp */
+.weather-update-time {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    margin-top: 0.5rem;
+    font-style: italic;
+}
+
+/* Theme-specific weather enhancements */
+.dark-theme .weather-display {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.15);
+}
+
+.ocean-theme .weather-display {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(0, 212, 255, 0.3);
+}
+
+.sunset-theme .weather-display {
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 193, 7, 0.4);
+}
+
+.neon-theme .weather-display {
+    background: rgba(255, 0, 255, 0.1);
+    border-color: rgba(255, 0, 255, 0.3);
+}
+
+.candy-theme .weather-display {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(210, 51, 105, 0.4);
+}
+
+/* Hover effects for interactive elements */
+.weather-display:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive weather layout */
+@media (max-width: 768px) {
+    .weather-display {
+        padding: 1.5rem;
+        gap: 0.5rem;
+    }
+    
+    .weather-details {
+        font-size: 0.8rem;
+        gap: 0.3rem;
+    }
+    
+    .weather-detail-label {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .weather-display {
+        padding: 1rem;
+        gap: 0.3rem;
+    }
+    
+    .weather-details {
+        font-size: 0.7rem;
+        gap: 0.2rem;
+    }
+    
+    .weather-detail-label {
+        font-size: 0.65rem;
+    }
+}
