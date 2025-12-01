@@ -184,11 +184,11 @@ class AtomicClockTester {
             
             // Check theme panel CSS
             const themePanelCSS = fs.readFileSync(path.join(this.projectRoot, 'styles/theme-panel-consolidated.css'), 'utf8');
-            if (themePanelCSS.includes('flex-direction: row')) {
-                this.log(`✅ Theme panel uses single row layout`, 'pass');
-                this.passed.push('Single row layout');
+            if (themePanelCSS.includes('flex-direction: column')) {
+                this.log(`✅ Theme panel uses original column layout`, 'pass');
+                this.passed.push('Original column layout');
             } else {
-                this.log(`❌ Theme panel not optimized for single row`, 'error');
+                this.log(`❌ Theme panel not using original column layout`, 'error');
                 this.errors.push('Theme panel layout issue');
             }
             
