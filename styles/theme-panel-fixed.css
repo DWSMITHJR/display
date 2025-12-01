@@ -89,8 +89,8 @@
     
     /* Better overflow handling */
     overflow: visible !important;
-    min-width: fit-content !important;
     min-width: -webkit-fill-available !important;
+    min-width: fit-content !important;
     width: auto !important;
 }
 
@@ -201,15 +201,15 @@
 .theme-controls {
     overflow: visible !important;
     width: 100% !important;
-    min-width: fit-content !important;
     min-width: -webkit-fill-available !important;
+    min-width: fit-content !important;
 }
 
 .control-row {
     overflow: visible !important;
     width: 100% !important;
-    min-width: fit-content !important;
     min-width: -webkit-fill-available !important;
+    min-width: fit-content !important;
     justify-content: center !important;
 }
 
@@ -217,8 +217,8 @@
 .theme-content {
     overflow: visible !important;
     width: 100% !important;
-    min-width: fit-content !important;
     min-width: -webkit-fill-available !important;
+    min-width: fit-content !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
