@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Clock & Weather Display</title>
+    <link rel="stylesheet" href="style.css" id="main-style">
+    <meta http-equiv="refresh" content="86400"> <!-- Auto-refresh every 24 hours for reliability -->
+</head>
+<body>
+    <div class="style-selector" id="theme-panel">
+        <div class="drag-handle"></div>
+        <label for="style-dropdown" class="style-selector-label">Theme:</label>
+        <select id="style-dropdown">
+            <option value="style.css">Original</option>
+            <option value="styles/dark.css">Dark</option>
+            <option value="styles/ocean.css">Ocean</option>
+            <option value="styles/sunset.css">Sunset</option>
+            <option value="styles/forest.css">Forest</option>
+            <option value="styles/cyberpunk.css">Cyberpunk</option>
+            <option value="styles/galaxy.css">Galaxy</option>
+            <option value="styles/aurora.css">Aurora</option>
+            <option value="styles/vintage.css">Vintage</option>
+            <option value="styles/minimal.css">Minimal</option>
+            <option value="styles/neon.css">Neon</option>
+            <option value="styles/candy.css">Candy</option>
+        </select>
+        <div class="theme-controls">
+            <label for="auto-rotate" class="auto-rotate-label">
+                <input type="checkbox" id="auto-rotate" title="Auto-rotate themes every 30 seconds">
+                Auto-rotate
+            </label>
+        </div>
+        <a href="README.md" target="_blank" class="readme-link" title="Open Documentation (README)">
+            📖
+        </a>
+        <button id="fullscreen-toggle" class="fullscreen-btn" title="Toggle Fullscreen (F)">
+            <span id="fullscreen-icon">⛶</span>
+        </button>
+    </div>
+    
+    <div class="container">
+        <header class="day-display">
+            <h1 id="day-name">Loading...</h1>
+            <p id="time-period">Morning</p>
+        </header>
+        
+        <main class="content">
+            <section class="time-section">
+                <div class="status-time">
+                    <div id="time-display" class="time">00:00:00</div>
+                    <div id="date-display" class="date">Loading...</div>
+                    <div id="timezone-display" class="timezone">Local Time</div>
+                </div>
+            </section>
+            
+            <section class="weather-section">
+                <div class="weather-display">
+                    <div id="weather-icon" class="weather-icon">🌤️</div>
+                    <div id="temperature" class="temperature">--°F</div>
+                    <div id="weather-description" class="weather-description">Loading weather...</div>
+                    <div id="location" class="location">Detecting location...</div>
+                    
+                    <!-- Additional Weather Details -->
+                    <div class="weather-details">
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">Feels Like:</span>
+                            <span id="feels-like" class="weather-detail-value">--°F</span>
+                        </div>
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">Humidity:</span>
+                            <span id="humidity" class="weather-detail-value">--%</span>
+                        </div>
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">Wind:</span>
+                            <span id="wind-speed" class="weather-detail-value">-- mph</span>
+                        </div>
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">Pressure:</span>
+                            <span id="pressure" class="weather-detail-value">-- in</span>
+                        </div>
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">UV Index:</span>
+                            <span id="uv-index" class="weather-detail-value">--</span>
+                        </div>
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">Visibility:</span>
+                            <span id="visibility" class="weather-detail-value">-- mi</span>
+                        </div>
+                    </div>
+                    
+                    <div id="weather-update-time" class="weather-update-time"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
