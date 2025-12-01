@@ -42,11 +42,11 @@ body {
     max-height: 50vh;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 2rem 1rem;
     overflow: visible;
-    gap: 0.5rem;
+    gap: 1rem;
     width: 100%;
 }
 
