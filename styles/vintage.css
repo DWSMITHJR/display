@@ -1,9 +1,17 @@
-/* Vintage Theme - Retro Brown */
+/* Vintage Theme - Using Original layout structure */
 
+/* Import Text Sizing Configuration - Original Theme Variables Applied */
+@import url('text-sizing-config.css');
 /* Import Common Size Functions */
 @import url('size-functions.css');
 /* Import Consolidated Theme Panel */
 @import url('theme-panel-consolidated.css');
+/* Import Panel Bottom Borders */
+@import url('panel-borders.css');
+/* Import Optimized Weather Layout */
+@import url('weather-layout.css');
+/* Import Kiosk Optimized Layout */
+@import url('kiosk-optimized.css');
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;

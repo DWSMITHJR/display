@@ -1,3 +1,5 @@
+/* Import Text Sizing Configuration - Original Theme Variables */
+@import url('styles/text-sizing-config.css');
 /* Import Common Size Functions */
 @import url('styles/size-functions.css');
 /* Import Consolidated Theme Panel */

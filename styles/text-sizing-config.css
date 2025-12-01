@@ -1,0 +1,214 @@
+/* Text Sizing Configuration - Original Theme Variables Applied to All Themes */
+
+/* This configuration ensures consistent text sizing across all themes */
+/* Based on Original theme's optimized sizing variables */
+
+:root {
+    /* Core Panel Scale - Applied to All Themes */
+    --panel-scale: 1.5;
+    
+    /* Typography Sizes - Original Theme Values (Applied Universally) */
+    --title-size-min: 8rem;         /* Main title minimum size */
+    --title-size-vh: 18vh;          /* Main title viewport height */
+    --title-size-max: 22rem;        /* Main title maximum size */
+    
+    --subtitle-size-min: 1.95rem;   /* Day panel secondary line - 80% of title */
+    --subtitle-size-vh: 14.4vh;     /* Secondary line viewport height */
+    --subtitle-size-max: 17.6rem;   /* Secondary line maximum size */
+    
+    --time-size-min: 5.2rem;        /* Time display minimum size */
+    --time-size-vh: 13vh;           /* Time display viewport height */
+    --time-size-max: 10.4rem;       /* Time display maximum size */
+    
+    --date-size-min: 1.76rem;       /* Date display minimum size */
+    --date-size-vh: 3.51vh;         /* Date display viewport height */
+    --date-size-max: 2.57rem;       /* Date display maximum size */
+    
+    --timezone-size-min: 1.4rem;    /* Timezone minimum size */
+    --timezone-size-vh: 2.93vh;     /* Timezone viewport height */
+    --timezone-size-max: 1.76rem;   /* Timezone maximum size */
+    
+    /* Weather Display Sizes - Original Theme Values */
+    --weather-icon-size-min: 2.7rem;    /* Weather icon minimum size */
+    --weather-icon-size-vh: 7.2vh;      /* Weather icon viewport height */
+    --weather-icon-size-max: 5.4rem;    /* Weather icon maximum size */
+    
+    --temperature-size-min: 5.2rem;     /* Temperature minimum size */
+    --temperature-size-vh: 13vh;        /* Temperature viewport height */
+    --temperature-size-max: 10.4rem;    /* Temperature maximum size */
+    
+    --weather-description-size-min: 1.2rem;   /* Weather description minimum */
+    --weather-description-size-vh: 2vh;       /* Weather description viewport */
+    --weather-description-size-max: 1.8rem;   /* Weather description maximum */
+    
+    --location-size-min: 1.08rem;       /* Location minimum size */
+    --location-size-vh: 1.8vh;          /* Location viewport height */
+    --location-size-max: 1.5rem;        /* Location maximum size */
+    
+    --weather-detail-size-min: 0.65rem; /* Weather details minimum */
+    --weather-detail-size-vh: 1.5vh;    /* Weather details viewport */
+    --weather-detail-size-max: 0.85rem; /* Weather details maximum */
+    
+    /* Responsive Scaling Factors - Applied to All Themes */
+    --kiosk-scale-factor: 1.8;      /* Kiosk display scaling */
+    --ultrawide-scale-factor: 2.2;  /* Ultra-wide display scaling */
+    --portrait-scale-factor: 1.6;   /* Portrait kiosk scaling */
+    
+    /* Mobile Responsive Breakpoints - Universal Configuration */
+    --mobile-breakpoint: 600px;
+    --tablet-breakpoint: 768px;
+    --desktop-breakpoint: 1024px;
+    
+    /* Mobile Scaling Adjustments - Applied to All Themes */
+    --mobile-panel-scale: 1.2;
+    --mobile-title-scale: 0.8;
+    --mobile-time-scale: 0.7;
+    --mobile-weather-scale: 0.6;
+}
+
+/* Mobile Responsive Text Sizing - Applied to All Themes */
+@media (max-width: 600px) {
+    :root {
+        --panel-scale: var(--mobile-panel-scale);
+        
+        /* Adjusted sizes for mobile devices */
+        --title-size-min: calc(8rem * var(--mobile-title-scale));
+        --title-size-vh: calc(18vh * var(--mobile-title-scale));
+        --title-size-max: calc(22rem * var(--mobile-title-scale));
+        
+        --subtitle-size-min: calc(1.95rem * var(--mobile-title-scale));
+        --subtitle-size-vh: calc(14.4vh * var(--mobile-title-scale));
+        --subtitle-size-max: calc(17.6rem * var(--mobile-title-scale));
+        
+        --time-size-min: calc(5.2rem * var(--mobile-time-scale));
+        --time-size-vh: calc(13vh * var(--mobile-time-scale));
+        --time-size-max: calc(10.4rem * var(--mobile-time-scale));
+        
+        --date-size-min: calc(1.76rem * var(--mobile-time-scale));
+        --date-size-vh: calc(3.51vh * var(--mobile-time-scale));
+        --date-size-max: calc(2.57rem * var(--mobile-time-scale));
+        
+        --timezone-size-min: calc(1.4rem * var(--mobile-time-scale));
+        --timezone-size-vh: calc(2.93vh * var(--mobile-time-scale));
+        --timezone-size-max: calc(1.76rem * var(--mobile-time-scale));
+        
+        --weather-icon-size-min: calc(2.7rem * var(--mobile-weather-scale));
+        --weather-icon-size-vh: calc(7.2vh * var(--mobile-weather-scale));
+        --weather-icon-size-max: calc(5.4rem * var(--mobile-weather-scale));
+        
+        --temperature-size-min: calc(5.2rem * var(--mobile-weather-scale));
+        --temperature-size-vh: calc(13vh * var(--mobile-weather-scale));
+        --temperature-size-max: calc(10.4rem * var(--mobile-weather-scale));
+    }
+}
+
+/* Tablet Responsive Text Sizing - Applied to All Themes */
+@media (min-width: 601px) and (max-width: 768px) {
+    :root {
+        --panel-scale: 1.3;
+        
+        /* Adjusted sizes for tablet devices */
+        --title-size-min: 7rem;
+        --title-size-vh: 16vh;
+        --title-size-max: 20rem;
+        
+        --subtitle-size-min: 1.7rem;
+        --subtitle-size-vh: 12.8vh;
+        --subtitle-size-max: 16rem;
+        
+        --time-size-min: 4.5rem;
+        --time-size-vh: 11vh;
+        --time-size-max: 9rem;
+    }
+}
+
+/* Theme-Specific Text Color Overrides (Preserving Theme Identity) */
+/* Note: Only colors are overridden, sizes remain consistent */
+
+/* Dark Theme Text Colors */
+body[data-theme="dark"] {
+    --text-primary: #ffffff;
+    --text-secondary: #e0e0e0;
+    --text-accent: #bb86fc;
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Ocean Theme Text Colors */
+body[data-theme="ocean"] {
+    --text-primary: #ffffff;
+    --text-secondary: #e3f2fd;
+    --text-accent: #64b5f6;
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Sunset Theme Text Colors */
+body[data-theme="sunset"] {
+    --text-primary: #ffffff;
+    --text-secondary: #fff3e0;
+    --text-accent: #ff9800;
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Forest Theme Text Colors */
+body[data-theme="forest"] {
+    --text-primary: #ffffff;
+    --text-secondary: #e8f5e8;
+    --text-accent: #81c784;
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Cyberpunk Theme Text Colors */
+body[data-theme="cyberpunk"] {
+    --text-primary: #00ff00;
+    --text-secondary: #00cc00;
+    --text-accent: #ff00ff;
+    --text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+/* Galaxy Theme Text Colors */
+body[data-theme="galaxy"] {
+    --text-primary: #ffffff;
+    --text-secondary: #e1bee7;
+    --text-accent: #ba68c8;
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Aurora Theme Text Colors */
+body[data-theme="aurora"] {
+    --text-primary: #ffffff;
+    --text-secondary: #e0f7fa;
+    --text-accent: #4dd0e1;
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Vintage Theme Text Colors */
+body[data-theme="vintage"] {
+    --text-primary: #f4e4c1;
+    --text-secondary: #d4c4a0;
+    --text-accent: #8b7355;
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.6);
+}
+
+/* Minimal Theme Text Colors */
+body[data-theme="minimal"] {
+    --text-primary: #333333;
+    --text-secondary: #666666;
+    --text-accent: #1976d2;
+    --text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Neon Theme Text Colors */
+body[data-theme="neon"] {
+    --text-primary: #ff00ff;
+    --text-secondary: #00ffff;
+    --text-accent: #ffff00;
+    --text-shadow: 0 0 8px rgba(255, 0, 255, 0.8);
+}
+
+/* Candy Theme Text Colors */
+body[data-theme="candy"] {
+    --text-primary: #ffffff;
+    --text-secondary: #fce4ec;
+    --text-accent: #ff4081;
+    --text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
