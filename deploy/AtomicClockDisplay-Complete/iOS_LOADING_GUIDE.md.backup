@@ -1,0 +1,93 @@
+# iOS Local Loading Guide
+
+## Quick & Simple iOS Setup
+
+### Method 1: Direct Safari Loading (Easiest)
+
+1. **Extract the deployment package** to your computer
+2. **Navigate to**: `AtomicClockDisplay-Complete/web-application/`
+3. **Copy the entire `web-application` folder** to your device
+4. **Open Safari** on your iOS device
+5. **Tap the address bar** and enter the local file path:
+   - If using Files app: `file:///private/var/mobile/Containers/Shared/AppGroup/.../web-application/index.html`
+   - **OR** use the simpler method below
+
+### Method 2: Files App + Safari (Recommended)
+
+1. **Save to Files**:
+   - Copy the `web-application` folder to your iOS Files app
+   - Place it in a convenient location (like iCloud Drive or On My iPhone)
+
+2. **Open in Safari**:
+   - Open Files app → Navigate to your `web-application` folder
+   - Tap on `index.html`
+   - Tap "Share" → "Safari" (or choose "Open in Safari")
+
+3. **Add to Home Screen**:
+   - In Safari, tap the "Share" button (square with arrow)
+   - Scroll down and tap "Add to Home Screen"
+   - Name it "Atomic Clock Display"
+   - Tap "Add"
+
+### Method 3: Local Server (Best Experience)
+
+1. **Start Local Server**:
+   - On your computer, navigate to `web-application` folder
+   - Run: `python server.py` (or double-click `start-web.bat`)
+   - Note the IP address shown (e.g., `http://192.168.1.100:8000`)
+
+2. **Access on iOS**:
+   - Ensure iOS device is on same WiFi network
+   - Open Safari and enter the IP address
+   - Add to Home Screen as above
+
+## iOS-Specific Optimizations
+
+### Kiosk Mode Setup
+
+1. **Settings → Display & Brightness → Auto-Lock**: Set to "Never"
+2. **Settings → Screen Time → Content & Privacy Restrictions**:
+   - Enable Restrictions
+   - Limit access to other apps if needed
+3. **Use Guided Access** (Triple-click Home/Power button) for true kiosk mode
+
+### Performance Tips
+
+- **Close other Safari tabs** for better performance
+- **Use "Add to Home Screen"** for app-like experience
+- **Enable "Reduce Motion"** if animations are slow
+- **Connect to WiFi** for weather features
+
+### Troubleshooting
+
+- **Weather not working**: Check internet connection and location services
+- **Text too small/large**: Pinch to zoom, then add to home screen
+- **Theme not saving**: Ensure Safari is not in private mode
+- **Screen timeout**: Disable Auto-Lock in Settings
+
+## File Locations
+
+After deployment, your main files are in:
+
+```text
+AtomicClockDisplay-Complete/
+├── web-application/
+│   ├── index.html (Main file)
+│   ├── script.js (Functionality)
+│   ├── style.css (Styling)
+│   └── styles/ (Theme files)
+└── documentation/
+    └── README.md (Full documentation)
+```
+
+## Quick Start Summary
+
+1. **Extract** `AtomicClockDisplay-Complete.zip`
+2. **Copy** `web-application` folder to iOS Files app
+3. **Open** `index.html` in Safari via Files app
+4. **Add to Home Screen** for app-like experience
+5. **Enjoy** your Atomic Clock Display! 🎉
+
+---
+
+**Need Help?** Check the full documentation in the `documentation/` folder or visit the project repository.
