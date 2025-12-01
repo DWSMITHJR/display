@@ -26,10 +26,14 @@ class StatusDisplay {
         this.startClock();
         
         // Ensure weather always populates with retry logic
+        console.log('Initializing weather system...');
         await this.ensureWeatherPopulates();
         
         // Add click-to-refresh weather functionality
         this.initWeatherRefresh();
+        
+        // Add reload functionality
+        this.initReloadOptions();
         
         // Add window resize listener for dynamic adjustment
         this.initResponsiveHandling();
@@ -42,6 +46,7 @@ class StatusDisplay {
         
         // Weather updates every 10 minutes with retry
         setInterval(async () => {
+            console.log('Scheduled weather update triggered');
             await this.ensureWeatherPopulates();
         }, 600000);
         
@@ -55,38 +60,59 @@ class StatusDisplay {
         
         // Ensure auto-rotate is working
         this.verifyAutoRotateFunctionality();
+        
+        console.log('Atomic Clock Display initialization complete');
     }
 
     async ensureWeatherPopulates() {
         console.log('Ensuring weather populates...');
         let attempts = 0;
-        const maxAttempts = 3;
+        const maxAttempts = 5; // Increased from 3 to 5
         
         while (attempts < maxAttempts) {
             try {
+                console.log(`Weather population attempt ${attempts + 1}/${maxAttempts}`);
+                
                 await this.updateWeather();
                 
-                // Verify weather data is populated
-                if (this.weatherData && this.weatherData.temperature && this.weatherData.location) {
+                // Verify weather data is populated with more thorough checks
+                if (this.weatherData && 
+                    this.weatherData.temperature !== undefined && 
+                    this.weatherData.location && 
+                    this.weatherData.description &&
+                    this.weatherData.icon) {
+                    
                     console.log('Weather populated successfully on attempt:', attempts + 1);
+                    
+                    // Update the display to ensure it's visible
+                    this.updateWeatherDisplay();
+                    
                     return true;
                 } else {
-                    console.warn('Weather data incomplete, retrying...');
+                    console.warn('Weather data incomplete, retrying...', this.weatherData);
                     attempts++;
-                    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+                    
+                    // Progressive delay: 2s, 3s, 4s, 5s, 6s
+                    const delay = 2000 + (attempts * 1000);
+                    await new Promise(resolve => setTimeout(resolve, delay));
                 }
             } catch (error) {
                 console.error('Weather update failed on attempt', attempts + 1, ':', error);
                 attempts++;
+                
                 if (attempts < maxAttempts) {
-                    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+                    // Progressive delay for errors as well
+                    const delay = 2000 + (attempts * 1000);
+                    await new Promise(resolve => setTimeout(resolve, delay));
                 }
             }
         }
         
-        // If all attempts failed, ensure fallback is set
-        console.log('All weather attempts failed, ensuring fallback data');
+        // If all attempts failed, ensure fallback is set and displayed
+        console.log('All weather attempts failed, ensuring fallback data is displayed');
         this.setWeatherFallback();
+        this.updateWeatherDisplay();
+        
         return false;
     }
     
@@ -140,7 +166,7 @@ class StatusDisplay {
         const weatherDisplay = document.querySelector('.weather-display');
         if (weatherDisplay) {
             weatherDisplay.style.cursor = 'pointer';
-            weatherDisplay.title = 'Click to refresh weather';
+            weatherDisplay.title = 'Click to refresh weather (R key)';
             
             weatherDisplay.addEventListener('click', async (e) => {
                 // Don't refresh if clicking on interactive elements
@@ -149,19 +175,260 @@ class StatusDisplay {
                 }
                 
                 console.log('Manual weather refresh triggered');
-                
-                // Add visual feedback
+                await this.refreshWeatherWithFeedback();
+            });
+        }
+        
+        // Add keyboard shortcut for weather refresh
+        document.addEventListener('keydown', async (e) => {
+            if (e.key === 'r' || e.key === 'R') {
+                e.preventDefault();
+                console.log('Weather refresh keyboard shortcut triggered');
+                await this.refreshWeatherWithFeedback();
+            }
+        });
+        
+        // Add double-click for force refresh
+        if (weatherDisplay) {
+            weatherDisplay.addEventListener('dblclick', async (e) => {
+                e.preventDefault();
+                console.log('Force weather refresh triggered (double-click)');
+                await this.forceRefreshWeather();
+            });
+        }
+    }
+    
+    async refreshWeatherWithFeedback() {
+        const weatherDisplay = document.querySelector('.weather-display');
+        
+        try {
+            // Add visual feedback
+            if (weatherDisplay) {
                 weatherDisplay.style.transform = 'scale(0.98)';
                 weatherDisplay.style.opacity = '0.7';
-                
+                weatherDisplay.style.transition = 'all 0.2s ease';
+            }
+            
+            // Show loading notification
+            this.showNotification('Refreshing weather...');
+            
+            // Attempt to refresh weather with retry logic
+            const success = await this.ensureWeatherPopulates();
+            
+            if (success) {
+                this.showNotification('Weather updated successfully');
+                console.log('Weather refresh completed successfully');
+            } else {
+                this.showNotification('Weather updated with fallback data');
+                console.log('Weather refresh completed with fallback data');
+            }
+            
+        } catch (error) {
+            console.error('Weather refresh failed:', error);
+            this.showNotification('Weather refresh failed, using fallback');
+            this.setWeatherFallback();
+        } finally {
+            // Remove visual feedback
+            if (weatherDisplay) {
                 setTimeout(() => {
                     weatherDisplay.style.transform = '';
                     weatherDisplay.style.opacity = '';
                 }, 200);
-                
-                await this.updateWeather();
-            });
+            }
         }
+    }
+    
+    async forceRefreshWeather() {
+        console.log('Force refreshing weather...');
+        
+        try {
+            // Clear any cached weather data
+            this.weatherData = null;
+            
+            // Show force refresh notification
+            this.showNotification('Force refreshing weather...');
+            
+            // Reset loading state
+            this.setWeatherLoading();
+            
+            // Attempt multiple retries with different strategies
+            let success = false;
+            for (let attempt = 1; attempt <= 5; attempt++) {
+                console.log(`Force refresh attempt ${attempt}/5`);
+                
+                try {
+                    await this.updateWeather();
+                    
+                    if (this.weatherData && this.weatherData.temperature && this.weatherData.location) {
+                        success = true;
+                        console.log('Force refresh successful on attempt:', attempt);
+                        break;
+                    }
+                } catch (error) {
+                    console.warn(`Force refresh attempt ${attempt} failed:`, error);
+                }
+                
+                // Wait longer between force refresh attempts
+                await new Promise(resolve => setTimeout(resolve, 3000));
+            }
+            
+            if (success) {
+                this.showNotification('Weather force refreshed successfully');
+            } else {
+                this.showNotification('Force refresh failed, using fallback');
+                this.setWeatherFallback();
+            }
+            
+        } catch (error) {
+            console.error('Force refresh completely failed:', error);
+            this.showNotification('Weather unavailable, using fallback');
+            this.setWeatherFallback();
+        }
+    }
+
+    initReloadOptions() {
+        console.log('Initializing reload options...');
+        
+        // Add keyboard shortcut for full page reload (Ctrl+R or F5)
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey && e.key === 'r') || e.key === 'F5') {
+                e.preventDefault();
+                console.log('Full page reload triggered');
+                this.reloadPage();
+            }
+        });
+        
+        // Add keyboard shortcut for soft reload (Shift+R)
+        document.addEventListener('keydown', (e) => {
+            if (e.shiftKey && e.key === 'R') {
+                e.preventDefault();
+                console.log('Soft reload triggered');
+                this.softReload();
+            }
+        });
+        
+        // Add right-click context menu option for reload
+        document.addEventListener('contextmenu', (e) => {
+            // Only add custom context menu for the main container
+            if (e.target.closest('.container')) {
+                e.preventDefault();
+                this.showReloadContextMenu(e.clientX, e.clientY);
+            }
+        });
+        
+        console.log('Reload options initialized');
+    }
+    
+    reloadPage() {
+        this.showNotification('Reloading page...');
+        
+        // Save current state before reload
+        localStorage.setItem('lastReloadTime', new Date().toISOString());
+        localStorage.setItem('autoRotateBeforeReload', 
+            document.getElementById('auto-rotate')?.checked || false);
+        
+        // Force hard reload
+        setTimeout(() => {
+            window.location.reload(true);
+        }, 500);
+    }
+    
+    async softReload() {
+        this.showNotification('Soft reloading...');
+        
+        try {
+            // Reinitialize weather system
+            console.log('Soft reloading weather system...');
+            await this.ensureWeatherPopulates();
+            
+            // Reinitialize time display
+            console.log('Soft reloading time display...');
+            this.updateTime();
+            
+            // Verify auto-rotate functionality
+            console.log('Soft reloading auto-rotate...');
+            this.verifyAutoRotateFunctionality();
+            
+            // Ensure text is not cropped
+            setTimeout(() => this.ensureTextNotCropped(), 500);
+            
+            this.showNotification('Soft reload complete');
+            console.log('Soft reload completed successfully');
+            
+        } catch (error) {
+            console.error('Soft reload failed:', error);
+            this.showNotification('Soft reload failed, trying full reload...');
+            setTimeout(() => this.reloadPage(), 1000);
+        }
+    }
+    
+    showReloadContextMenu(x, y) {
+        // Remove any existing context menu
+        const existingMenu = document.getElementById('reload-context-menu');
+        if (existingMenu) {
+            existingMenu.remove();
+        }
+        
+        // Create context menu
+        const menu = document.createElement('div');
+        menu.id = 'reload-context-menu';
+        menu.style.cssText = `
+            position: fixed;
+            left: ${x}px;
+            top: ${y}px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            padding: 8px 0;
+            z-index: 10000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        `;
+        
+        // Add menu items
+        const menuItems = [
+            { text: '🔄 Refresh Weather', action: () => this.refreshWeatherWithFeedback() },
+            { text: '⚡ Soft Reload', action: () => this.softReload() },
+            { text: '🔃 Full Reload', action: () => this.reloadPage() },
+            { text: '❌ Close', action: () => menu.remove() }
+        ];
+        
+        menuItems.forEach(item => {
+            const menuItem = document.createElement('div');
+            menuItem.textContent = item.text;
+            menuItem.style.cssText = `
+                padding: 8px 16px;
+                color: white;
+                cursor: pointer;
+                font-size: 12px;
+                transition: background 0.2s ease;
+            `;
+            
+            menuItem.addEventListener('mouseenter', () => {
+                menuItem.style.background = 'rgba(255, 255, 255, 0.1)';
+            });
+            
+            menuItem.addEventListener('mouseleave', () => {
+                menuItem.style.background = 'transparent';
+            });
+            
+            menuItem.addEventListener('click', () => {
+                item.action();
+                menu.remove();
+            });
+            
+            menu.appendChild(menuItem);
+        });
+        
+        document.body.appendChild(menu);
+        
+        // Close menu when clicking outside
+        setTimeout(() => {
+            document.addEventListener('click', function closeMenu() {
+                menu.remove();
+                document.removeEventListener('click', closeMenu);
+            });
+        }, 100);
     }
 
     initStyleSelector() {
@@ -707,6 +974,9 @@ class StatusDisplay {
     }
 
     setWeatherFallback() {
+        console.log('Setting weather fallback data...');
+        
+        // Set comprehensive fallback data
         this.weatherData = {
             temperature: 72,
             description: 'Pleasant',
@@ -717,9 +987,20 @@ class StatusDisplay {
             windSpeed: 5,
             pressure: 30.00,
             uvIndex: 5,
-            visibility: 10
+            visibility: 10,
+            timestamp: new Date().toISOString(),
+            isFallback: true
         };
-        this.updateWeatherDisplay();
+        
+        console.log('Weather fallback data set:', this.weatherData);
+        
+        // Ensure the display is updated immediately
+        try {
+            this.updateWeatherDisplay();
+            console.log('Weather display updated with fallback data');
+        } catch (error) {
+            console.error('Failed to update weather display with fallback:', error);
+        }
     }
 
     updateWeatherDisplay() {
