@@ -37,3 +37,116 @@
     --ultrawide-scale-factor: 2.2;  /* Scale factor for ultra-wide displays */
     --portrait-scale-factor: 1.6;   /* Scale factor for portrait kiosks */
 }
+
+/* Text overflow and cropping prevention */
+.day-display {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: fit-content !important;
+}
+
+.day-display h1 {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    letter-spacing: -0.02em !important;
+    word-break: normal !important;
+    hyphens: none !important;
+}
+
+.day-display p {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+    word-break: normal !important;
+    hyphens: none !important;
+}
+
+.time {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.02em !important;
+    word-break: normal !important;
+    hyphens: none !important;
+}
+
+.date, .timezone, .city {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    hyphens: none !important;
+}
+
+.weather-display {
+    overflow: visible !important;
+}
+
+.temperature {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    hyphens: none !important;
+}
+
+.weather-description, .location {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    hyphens: auto !important;
+}
+
+.weather-detail-value {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    hyphens: none !important;
+}
+
+/* Container constraints to prevent overflow */
+.container {
+    overflow: visible !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+}
+
+.content {
+    overflow: visible !important;
+    min-height: 0 !important;
+}
+
+/* Responsive text sizing adjustments */
+@media (max-width: 768px) {
+    .day-display h1 {
+        font-size: clamp(6rem, 12vw, 12rem) !important;
+    }
+    
+    .day-display p {
+        font-size: clamp(1.5rem, 10vw, 12rem) !important;
+    }
+    
+    .time {
+        font-size: clamp(2.5rem, 6vw, 4rem) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .day-display h1 {
+        font-size: clamp(4rem, 10vw, 8rem) !important;
+    }
+    
+    .day-display p {
+        font-size: clamp(1.2rem, 8vw, 6rem) !important;
+    }
+    
+    .time {
+        font-size: clamp(2rem, 5vw, 3rem) !important;
+    }
+}

@@ -40,6 +40,14 @@ class StatusDisplay {
         
         // Weather updates every 10 minutes
         setInterval(() => this.updateWeather(), 600000);
+        
+        // Ensure text is not cropped on initialization
+        setTimeout(() => this.ensureTextNotCropped(), 500);
+        
+        // Monitor for text cropping after window resize
+        window.addEventListener('resize', () => {
+            setTimeout(() => this.ensureTextNotCropped(), 200);
+        });
     }
 
     initWeatherRefresh() {
@@ -606,6 +614,9 @@ class StatusDisplay {
         // Show notification that rotation is starting
         this.showNotification('Theme rotation started (30s intervals)');
         
+        // Ensure text is not cropped before starting rotation
+        this.ensureTextNotCropped();
+        
         this.autoRotateInterval = setInterval(() => {
             this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
             const nextTheme = this.themes[this.currentThemeIndex];
@@ -618,6 +629,9 @@ class StatusDisplay {
             if (autoRotateCheckbox && autoRotateCheckbox.checked && styleDropdown && mainStyle) {
                 this.applyStyle(nextTheme, styleDropdown, mainStyle);
                 console.log('Auto-rotated to theme:', nextTheme, '(index:', this.currentThemeIndex, ')');
+                
+                // Ensure text is not cropped after theme change
+                setTimeout(() => this.ensureTextNotCropped(), 100);
                 
                 // Show subtle notification for theme change (only in test mode or if debug is enabled)
                 if (window.location.search.includes('debug=true') || window.location.hostname === 'localhost') {
@@ -632,6 +646,167 @@ class StatusDisplay {
         console.log('Auto-rotation started with 30-second intervals from index:', this.currentThemeIndex);
     }
 
+    ensureTextNotCropped() {
+        try {
+            console.log('Checking for text cropping issues...');
+            
+            // Check all text elements for potential cropping
+            const textElements = [
+                { id: 'day-name', name: 'Day name' },
+                { id: 'time-period', name: 'Time period' },
+                { id: 'time-display', name: 'Time display' },
+                { id: 'date-display', name: 'Date display' },
+                { id: 'timezone-display', name: 'Timezone display' },
+                { id: 'city-display', name: 'City display' },
+                { id: 'temperature', name: 'Temperature' },
+                { id: 'weather-description', name: 'Weather description' },
+                { id: 'location', name: 'Location' },
+                { id: 'feels-like', name: 'Feels like' },
+                { id: 'humidity', name: 'Humidity' },
+                { id: 'wind-speed', name: 'Wind speed' },
+                { id: 'visibility', name: 'Visibility' }
+            ];
+            
+            let issuesFound = 0;
+            
+            textElements.forEach(element => {
+                const el = document.getElementById(element.id);
+                if (el) {
+                    // Check for text overflow
+                    const isOverflowing = el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight;
+                    
+                    if (isOverflowing) {
+                        console.warn(`Text cropping detected in ${element.name}:`, {
+                            element: element.id,
+                            scrollWidth: el.scrollWidth,
+                            clientWidth: el.clientWidth,
+                            scrollHeight: el.scrollHeight,
+                            clientHeight: el.clientHeight,
+                            text: el.textContent.substring(0, 50) + (el.textContent.length > 50 ? '...' : '')
+                        });
+                        
+                        // Apply fixes to prevent cropping
+                        this.fixTextCropping(el);
+                        issuesFound++;
+                    }
+                    
+                    // Ensure proper text properties
+                    this.ensureTextProperties(el);
+                }
+            });
+            
+            // Check container constraints
+            this.checkContainerConstraints();
+            
+            if (issuesFound > 0) {
+                console.log(`Fixed ${issuesFound} text cropping issues`);
+            } else {
+                console.log('No text cropping issues detected');
+            }
+            
+        } catch (error) {
+            console.error('Error checking text cropping:', error);
+        }
+    }
+    
+    fixTextCropping(element) {
+        try {
+            // Apply common fixes for text cropping
+            const originalStyles = {
+                overflow: element.style.overflow,
+                textOverflow: element.style.textOverflow,
+                whiteSpace: element.style.whiteSpace,
+                wordWrap: element.style.wordWrap,
+                wordBreak: element.style.wordBreak
+            };
+            
+            // Fix overflow issues
+            element.style.overflow = 'visible';
+            element.style.textOverflow = 'ellipsis';
+            
+            // Handle text wrapping based on element type
+            if (element.id === 'time-display' || element.id === 'day-name') {
+                element.style.whiteSpace = 'nowrap';
+                element.style.wordBreak = 'normal';
+            } else {
+                element.style.whiteSpace = 'normal';
+                element.style.wordWrap = 'break-word';
+                element.style.wordBreak = 'break-word';
+            }
+            
+            // Adjust font size if needed (only for non-critical elements)
+            if (element.scrollWidth > element.clientWidth * 1.1 && 
+                !['day-name', 'time-display'].includes(element.id)) {
+                const currentFontSize = parseFloat(window.getComputedStyle(element).fontSize);
+                const newFontSize = currentFontSize * 0.9;
+                element.style.fontSize = `${newFontSize}px`;
+                console.log(`Reduced font size for ${element.id} from ${currentFontSize}px to ${newFontSize}px`);
+            }
+            
+            console.log(`Applied text cropping fixes to ${element.id}`);
+            
+        } catch (error) {
+            console.error(`Error fixing text cropping for element:`, error);
+        }
+    }
+    
+    ensureTextProperties(element) {
+        try {
+            // Ensure proper text properties for all elements
+            const computedStyle = window.getComputedStyle(element);
+            
+            // Check for problematic text properties
+            if (computedStyle.textOverflow === 'clip' && element.style.textOverflow !== 'ellipsis') {
+                element.style.textOverflow = 'ellipsis';
+            }
+            
+            // Ensure proper line height
+            if (parseFloat(computedStyle.lineHeight) < 1.1) {
+                element.style.lineHeight = '1.2';
+            }
+            
+            // Ensure proper letter spacing for large text
+            if (element.id === 'day-name' || element.id === 'time-display') {
+                if (!element.style.letterSpacing) {
+                    element.style.letterSpacing = '-0.02em';
+                }
+            }
+            
+        } catch (error) {
+            console.error('Error ensuring text properties:', error);
+        }
+    }
+    
+    checkContainerConstraints() {
+        try {
+            // Check main container for size constraints
+            const container = document.querySelector('.container');
+            const dayDisplay = document.querySelector('.day-display');
+            const content = document.querySelector('.content');
+            
+            if (container && dayDisplay && content) {
+                // Check if container is properly sized
+                const containerHeight = container.clientHeight;
+                const dayDisplayHeight = dayDisplay.clientHeight;
+                const contentHeight = content.clientHeight;
+                
+                if (dayDisplayHeight > containerHeight * 0.5) {
+                    console.warn('Day display taking too much space, adjusting...');
+                    dayDisplay.style.maxHeight = '50vh';
+                }
+                
+                if (dayDisplayHeight + contentHeight > containerHeight * 0.95) {
+                    console.warn('Content overflow detected, adjusting...');
+                    const availableHeight = containerHeight * 0.95 - dayDisplayHeight;
+                    content.style.maxHeight = `${availableHeight}px`;
+                }
+            }
+            
+        } catch (error) {
+            console.error('Error checking container constraints:', error);
+        }
+    }
+    
     stopAutoRotate() {
         if (this.autoRotateInterval) {
             console.log('Stopping theme auto-rotation');
