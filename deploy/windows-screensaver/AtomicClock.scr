@@ -1,0 +1,243 @@
+#!/usr/bin/env python3
+"""
+Atomic Clock Display - Windows Screen Saver
+Native Windows screen saver implementation
+Version: 2.0.0-ScreenSaver
+"""
+
+import sys
+import os
+import webview
+import threading
+import time
+import subprocess
+import ctypes
+from ctypes import wintypes
+import winreg
+import shutil
+from pathlib import Path
+
+# Windows API constants
+HWND_TOPMOST = -1
+SWP_NOSIZE = 0x0001
+SWP_NOMOVE = 0x0002
+WS_EX_TOOLWINDOW = 0x00000080
+GWL_EXSTYLE = -20
+
+class WindowsScreenSaver:
+    def __init__(self):
+        self.window = None
+        self.running = False
+        self.preview_mode = False
+        self.config_mode = False
+        
+    def create_window(self):
+        """Create the screen saver window"""
+        try:
+            # Create webview window
+            self.window = webview.create_window(
+                'Atomic Clock Display',
+                'http://localhost:8080/index.final.html',
+                fullscreen=True,
+                frameless=True,
+                easy_drag=False,
+                on_closed=self.on_closed
+            )
+            
+            # Configure window properties
+            self.window.hide_title_bar = True
+            self.window.min_size = (800, 600)
+            
+        except Exception as e:
+            print(f"Error creating window: {e}")
+            sys.exit(1)
+    
+    def on_closed(self):
+        """Handle window close event"""
+        self.running = False
+    
+    def start_preview(self, parent_hwnd):
+        """Start preview mode in small window"""
+        self.preview_mode = True
+        try:
+            self.window = webview.create_window(
+                'Atomic Clock Preview',
+                'http://localhost:8080/index.final.html',
+                width=320,
+                height=240,
+                frameless=True,
+                resizable=False,
+                on_closed=self.on_closed
+            )
+        except Exception as e:
+            print(f"Error creating preview: {e}")
+    
+    def start_config(self):
+        """Start configuration dialog"""
+        self.config_mode = True
+        try:
+            # Create simple config window
+            self.window = webview.create_window(
+                'Atomic Clock Settings',
+                'http://localhost:8080/?config=true',
+                width=600,
+                height=400,
+                resizable=True,
+                on_closed=self.on_closed
+            )
+        except Exception as e:
+            print(f"Error creating config: {e}")
+    
+    def start_fullscreen(self):
+        """Start fullscreen screen saver"""
+        self.running = True
+        self.create_window()
+        
+        # Hide mouse cursor
+        try:
+            ctypes.windll.user32.ShowCursor(False)
+        except:
+            pass
+        
+        # Set window as topmost
+        try:
+            hwnd = self.window.get_windows()[0]._hwnd
+            ctypes.windll.user32.SetWindowPos(
+                hwnd, HWND_TOPMOST, 0, 0, 0, 0,
+                SWP_NOSIZE | SWP_NOMOVE
+            )
+        except:
+            pass
+    
+    def run(self):
+        """Main entry point"""
+        try:
+            # Parse command line arguments
+            if len(sys.argv) > 1:
+                arg = sys.argv[1].lower()
+                
+                if arg == '/s':
+                    # Start screen saver
+                    self.start_fullscreen()
+                elif arg == '/p':
+                    # Preview mode
+                    if len(sys.argv) > 2:
+                        parent_hwnd = int(sys.argv[2])
+                        self.start_preview(parent_hwnd)
+                    else:
+                        self.start_preview(0)
+                elif arg == '/c':
+                    # Configuration mode
+                    self.start_config()
+                else:
+                    # Default to screen saver
+                    self.start_fullscreen()
+            else:
+                # Default to screen saver
+                self.start_fullscreen()
+            
+            # Start webview
+            webview.start(debug=False, gui='edgechromium')
+            
+        except Exception as e:
+            print(f"Error running screen saver: {e}")
+            sys.exit(1)
+        finally:
+            # Show mouse cursor again
+            try:
+                ctypes.windll.user32.ShowCursor(True)
+            except:
+                pass
+
+def install_screensaver():
+    """Install the screen saver to Windows system"""
+    try:
+        # Get system directory
+        system32 = os.path.join(os.environ.get('SystemRoot', 'C:\\Windows'), 'System32')
+        
+        # Copy screen saver file
+        script_path = os.path.abspath(__file__)
+        dest_path = os.path.join(system32, 'AtomicClock.scr')
+        
+        shutil.copy2(script_path, dest_path)
+        print(f"Screen saver installed to: {dest_path}")
+        
+        # Set registry values
+        try:
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, 
+                              r'Control Panel\Desktop', 
+                              0, winreg.KEY_SET_VALUE) as key:
+                
+                # Set as default screen saver
+                winreg.SetValueEx(key, 'SCRNSAVE.EXE', 0, 
+                                 winreg.REG_SZ, dest_path)
+                
+                # Set timeout (5 minutes)
+                winreg.SetValueEx(key, 'ScreenSaveTimeOut', 0, 
+                                 winreg.REG_SZ, '300')
+                
+                # Enable screen saver
+                winreg.SetValueEx(key, 'ScreenSaveActive', 0, 
+                                 winreg.REG_SZ, '1')
+                
+                print("Screen saver configured in Windows registry")
+                
+        except Exception as e:
+            print(f"Warning: Could not configure registry: {e}")
+        
+        print("Installation complete! You can now configure the screen saver in Windows Display Settings.")
+        
+    except Exception as e:
+        print(f"Installation failed: {e}")
+
+def uninstall_screensaver():
+    """Uninstall the screen saver from Windows system"""
+    try:
+        # Remove from system directory
+        system32 = os.path.join(os.environ.get('SystemRoot', 'C:\\Windows'), 'System32')
+        scr_path = os.path.join(system32, 'AtomicClock.scr')
+        
+        if os.path.exists(scr_path):
+            os.remove(scr_path)
+            print(f"Screen saver removed from: {scr_path}")
+        
+        # Clear registry
+        try:
+            with winreg.OpenKey(winreg.HKEY_CURRENT_USER, 
+                              r'Control Panel\Desktop', 
+                              0, winreg.KEY_SET_VALUE) as key:
+                
+                # Remove screen saver setting
+                try:
+                    winreg.DeleteValue(key, 'SCRNSAVE.EXE')
+                except FileNotFoundError:
+                    pass
+                
+                print("Screen saver removed from Windows registry")
+                
+        except Exception as e:
+            print(f"Warning: Could not update registry: {e}")
+        
+        print("Uninstallation complete!")
+        
+    except Exception as e:
+        print(f"Uninstallation failed: {e}")
+
+def main():
+    """Main entry point"""
+    if len(sys.argv) > 1:
+        arg = sys.argv[1].lower()
+        
+        if arg == '/install':
+            install_screensaver()
+            return
+        elif arg == '/uninstall':
+            uninstall_screensaver()
+            return
+    
+    # Run screen saver
+    screensaver = WindowsScreenSaver()
+    screensaver.run()
+
+if __name__ == '__main__':
+    main()
