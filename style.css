@@ -48,9 +48,10 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 2rem 0;
+    padding: 2rem 1rem;
     overflow: visible;
     gap: 0.5rem;
+    width: 100%;
 }
 
 .day-display h1 {
@@ -63,6 +64,7 @@ body {
     overflow: visible;
     height: auto;
     display: inline-block;
+    white-space: nowrap;
 }
 
 .day-display h1#time-period {
@@ -71,6 +73,7 @@ body {
     text-shadow: 0 12px 50px rgba(0, 0, 0, 0.7);
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .content {
@@ -303,11 +306,13 @@ body {
     .day-display h1 {
         font-size: clamp(3rem, 8vh, 8rem);
         line-height: 0.95;
+        white-space: nowrap;
     }
     
     .day-display h1#time-period {
         font-size: clamp(3rem, 8vh, 8rem);
         letter-spacing: 0.03em;
+        white-space: nowrap;
     }
     
     .time {
@@ -381,10 +386,12 @@ body {
     
     .day-display h1 {
         font-size: clamp(5rem, 12vh, 12rem);
+        white-space: nowrap;
     }
     
     .day-display h1#time-period {
         font-size: clamp(5rem, 12vh, 12rem);
+        white-space: nowrap;
     }
     
     .time {
@@ -418,10 +425,12 @@ body {
     
     .day-display h1 {
         font-size: clamp(6rem, 14vh, 14rem);
+        white-space: nowrap;
     }
     
     .day-display h1#time-period {
         font-size: clamp(6rem, 14vh, 14rem);
+        white-space: nowrap;
     }
     
     .time {
@@ -455,10 +464,12 @@ body {
     
     .day-display h1 {
         font-size: clamp(8rem, 16vh, 16rem);
+        white-space: nowrap;
     }
     
     .day-display h1#time-period {
         font-size: clamp(8rem, 16vh, 16rem);
+        white-space: nowrap;
     }
     
     .time {
@@ -514,6 +525,7 @@ body {
     
     .day-display h1 {
         font-size: clamp(2rem, 4vh, 4rem);
+        white-space: nowrap;
     }
     
     .time {
