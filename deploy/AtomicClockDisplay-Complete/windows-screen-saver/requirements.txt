@@ -1,0 +1,13 @@
+# Atomic Clock Display - Windows Screen Saver Dependencies
+# Version: 2.0.0-ScreenSaver
+
+# Web view for native window rendering
+pywebview>=4.0.0
+
+# Windows API access (built-in with Python on Windows)
+# ctypes - Built-in module for Windows API calls
+
+# System requirements:
+# - Windows 10/11
+# - Python 3.8+
+# - Microsoft Edge WebView2 Runtime (usually pre-installed)

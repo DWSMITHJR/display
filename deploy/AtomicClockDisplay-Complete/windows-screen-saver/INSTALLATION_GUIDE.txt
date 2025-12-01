@@ -1,0 +1,141 @@
+🖥️ ATOMIC CLOCK DISPLAY - SCREEN SAVER INSTALLATION GUIDE
+
+============================================================
+
+QUICK INSTALLATION (2 MINUTES):
+============================================================
+
+METHOD 1: AUTOMATIC INSTALLATION (RECOMMENDED)
+------------------------------------------------
+1. Right-click on "install.bat"
+2. Select "Run as administrator"
+3. Click "Yes" on the UAC prompt
+4. Follow the installation prompts
+5. Installation complete!
+
+METHOD 2: MANUAL INSTALLATION
+------------------------------------------------
+1. Open Command Prompt as Administrator
+2. Navigate to the screen saver directory:
+   cd C:\path\to\AtomicClockScreenSaver
+3. Run the installation command:
+   python AtomicClock.scr /install
+
+METHOD 3: COPY & REGISTER MANUALLY
+------------------------------------------------
+1. Copy "AtomicClock.scr" to C:\Windows\System32\
+2. Open Registry Editor (regedit.exe)
+3. Navigate to: HKEY_CURRENT_USER\Control Panel\Desktop
+4. Set "SCRNSAVE.EXE" to "C:\Windows\System32\AtomicClock.scr"
+5. Set "ScreenSaveTimeOut" to "300" (5 minutes)
+6. Set "ScreenSaveActive" to "1"
+
+============================================================
+
+CONFIGURATION IN WINDOWS:
+============================================================
+
+WINDOWS 10/11 SETTINGS:
+1. Right-click on desktop → "Personalize"
+2. Click on "Lock screen"
+3. Click "Screen saver settings"
+4. Select "Atomic Clock" from the dropdown
+5. Set your preferred wait time
+6. Click "Apply" then "OK"
+
+ALTERNATIVE METHOD:
+1. Press Windows + R
+2. Type: control desk.cpl,,@screensaver
+3. Press Enter
+4. Select "Atomic Clock" and configure
+
+============================================================
+
+TROUBLESHOOTING:
+============================================================
+
+PROBLEM: "Access denied" during installation
+SOLUTION: Run install.bat as administrator
+
+PROBLEM: "Python not found"
+SOLUTION: Install Python 3.8+ from python.org
+
+PROBLEM: Screen saver not appearing in list
+SOLUTION: Verify AtomicClock.scr is in C:\Windows\System32\
+
+PROBLEM: Weather not updating
+SOLUTION: Check internet connection and API keys
+
+PROBLEM: Screen saver runs slowly
+SOLUTION: Update graphics drivers, close other apps
+
+============================================================
+
+UNINSTALLATION:
+============================================================
+
+METHOD 1: AUTOMATIC UNINSTALL
+1. Right-click on "uninstall.bat"
+2. Select "Run as administrator"
+3. Confirm uninstallation
+
+METHOD 2: MANUAL UNINSTALL
+1. Delete C:\Windows\System32\AtomicClock.scr
+2. Clear registry settings:
+   - Delete "SCRNSAVE.EXE" value
+   - Set "ScreenSaveActive" to "0"
+
+============================================================
+
+FEATURES & CONTROLS:
+============================================================
+
+KEYBOARD SHORTCUTS (when screen saver is active):
+- ESC     Exit screen saver
+- F       Toggle fullscreen
+- T       Cycle through themes
+- R       Refresh weather data
+- 1-9     Select themes 1-9
+- 0       Select theme 10
+- -       Select theme 11
+- =       Select theme 12
+
+THEMES AVAILABLE:
+1. Original    7. Galaxy
+2. Dark        8. Aurora
+3. Ocean       9. Vintage
+4. Sunset      10. Minimal
+5. Forest      11. Neon
+6. Cyberpunk   12. Candy
+
+============================================================
+
+SYSTEM REQUIREMENTS:
+============================================================
+
+MINIMUM:
+- Windows 10 (1903) or Windows 11
+- Python 3.8 or higher
+- 4GB RAM
+- 100MB free disk space
+- Internet connection (for weather)
+
+RECOMMENDED:
+- Windows 11
+- Python 3.10 or higher
+- 8GB RAM
+- 500MB free disk space
+- Broadband internet
+
+============================================================
+
+SUPPORT:
+============================================================
+
+For additional help:
+1. Check the README.md file
+2. Review DEPLOYMENT.md for enterprise setup
+3. Visit the project repository
+4. Check troubleshooting section in documentation
+
+Enjoy your beautiful Atomic Clock Display screen saver! 🚀
