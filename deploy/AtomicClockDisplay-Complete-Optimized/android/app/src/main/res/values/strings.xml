@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Atomic Clock Display</string>
+    <string name="loading">Loading...</string>
+    <string name="error_network">Network error. Please check your connection.</string>
+    <string name="error_location">Location access required for weather.</string>
+    <string name="kiosk_mode_enabled">Kiosk mode enabled</string>
+    <string name="kiosk_mode_disabled">Kiosk mode disabled</string>
+    <string name="refresh_content">Refresh content</string>
+    <string name="offline_mode">Offline Mode</string>
+    <string name="no_internet">No internet connection available. Some features may be limited.</string>
+    <string name="retry_connection">Retry Connection</string>
+    <string name="admin_permission_required">Device admin permission required for kiosk mode.</string>
+    <string name="enable_kiosk">Enable Kiosk Mode</string>
+    <string name="disable_kiosk">Disable Kiosk Mode</string>
+    <string name="fullscreen">Fullscreen</string>
+    <string name="exit_fullscreen">Exit Fullscreen</string>
+</resources>

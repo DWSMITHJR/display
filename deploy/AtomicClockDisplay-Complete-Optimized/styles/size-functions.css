@@ -1,0 +1,159 @@
+/* Common Size Functions for All Themes */
+
+:root {
+    --panel-scale: 1.5;
+    
+    /* Typography Sizes - Increased to 100% */
+    --title-size-min: 8rem;         /* Increased from 7.2rem */
+    --title-size-vh: 18vh;          /* Increased from 16.2vh */
+    --title-size-max: 22rem;        /* Increased from 19.8rem */
+    
+    --subtitle-size-min: 1.95rem;   /* Increased to 80% of title-size-min (8rem * 0.8) */
+    --subtitle-size-vh: 14.4vh;     /* Increased to 80% of title-size-vh (18vh * 0.8) */
+    --subtitle-size-max: 17.6rem;   /* Increased to 80% of title-size-max (22rem * 0.8) */
+    
+    --time-size-min: 5.2rem;
+    --time-size-vh: 13vh;
+    --time-size-max: 10.4rem;
+    
+    --date-size-min: 1.76rem;      /* 1.95rem * 0.9 */
+    --date-size-vh: 3.51vh;        /* 3.9vh * 0.9 */
+    --date-size-max: 2.57rem;      /* 2.86rem * 0.9 */
+    
+    --timezone-size-min: 1.4rem;   /* 1.56rem * 0.9 */
+    --timezone-size-vh: 2.93vh;    /* 3.25vh * 0.9 */
+    --timezone-size-max: 1.76rem;  /* 1.95rem * 0.9 */
+    
+    --weather-icon-size-min: 2.7rem;  /* 3rem * 0.9 */
+    --weather-icon-size-vh: 7.2vh;    /* 8vh * 0.9 */
+    --weather-icon-size-max: 5.4rem;  /* 6rem * 0.9 */
+    
+    --temperature-size-min: 5.2rem;  /* Same as time-size-min */
+    --temperature-size-vh: 13vh;     /* Same as time-size-vh */
+    --temperature-size-max: 10.4rem; /* Same as time-size-max */
+    
+    /* Kiosk-specific scaling factors */
+    --kiosk-scale-factor: 1.8;      /* Scale factor for kiosk displays */
+    --ultrawide-scale-factor: 2.2;  /* Scale factor for ultra-wide displays */
+    --portrait-scale-factor: 1.6;   /* Scale factor for portrait kiosks */
+}
+
+/* Text overflow and cropping prevention */
+.day-display {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: fit-content !important;
+}
+
+.day-display h1 {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    line-height: 1 !important;
+    letter-spacing: -0.02em !important;
+    word-break: normal !important;
+    -webkit-hyphens: none !important;
+    hyphens: none !important;
+}
+
+.day-display p {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+    word-break: normal !important;
+    -webkit-hyphens: none !important;
+    hyphens: none !important;
+}
+
+.time {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    letter-spacing: -0.02em !important;
+    word-break: normal !important;
+    -webkit-hyphens: none !important;
+    hyphens: none !important;
+}
+
+.date, .timezone, .city {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    -webkit-hyphens: none !important;
+    hyphens: none !important;
+}
+
+.weather-display {
+    overflow: visible !important;
+}
+
+.temperature {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    -webkit-hyphens: none !important;
+    hyphens: none !important;
+}
+
+.weather-description, .location {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: normal !important;
+    word-wrap: break-word !important;
+    word-break: break-word !important;
+    -webkit-hyphens: auto !important;
+    hyphens: auto !important;
+}
+
+.weather-detail-value {
+    overflow: visible !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+    word-break: normal !important;
+    -webkit-hyphens: none !important;
+    hyphens: none !important;
+}
+
+/* Container constraints to prevent overflow */
+.container {
+    overflow: visible !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+}
+
+.content {
+    overflow: visible !important;
+    min-height: 0 !important;
+}
+
+/* Responsive text sizing adjustments */
+@media (max-width: 768px) {
+    .day-display h1 {
+        font-size: clamp(6rem, 12vw, 12rem) !important;
+    }
+    
+    .day-display p {
+        font-size: clamp(1.5rem, 10vw, 12rem) !important;
+    }
+    
+    .time {
+        font-size: clamp(2.5rem, 6vw, 4rem) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .day-display h1 {
+        font-size: clamp(4rem, 10vw, 8rem) !important;
+    }
+    
+    .day-display p {
+        font-size: clamp(1.2rem, 8vw, 6rem) !important;
+    }
+    
+    .time {
+        font-size: clamp(2rem, 5vw, 3rem) !important;
+    }
+}
