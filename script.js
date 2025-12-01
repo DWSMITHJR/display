@@ -32,6 +32,9 @@ class StatusDisplay {
         // Add window resize listener for dynamic adjustment
         this.initResponsiveHandling();
         
+        // Add keyboard shortcuts
+        this.initKeyboardShortcuts();
+        
         // Update every second
         setInterval(() => this.updateAll(), 1000);
         
@@ -638,6 +641,47 @@ class StatusDisplay {
         this.applyResponsiveAdjustments();
     }
 
+    initKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Only process shortcuts when not typing in input fields
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            switch(e.key.toLowerCase()) {
+                case 't':
+                    e.preventDefault();
+                    this.cycleTheme();
+                    console.log('Keyboard: Cycled theme (T key)');
+                    break;
+                case 'f':
+                    e.preventDefault();
+                    this.toggleFullscreen();
+                    console.log('Keyboard: Toggled fullscreen (F key)');
+                    break;
+                case 'r':
+                    e.preventDefault();
+                    this.updateWeather();
+                    this.showNotification('Weather refreshed');
+                    console.log('Keyboard: Refreshed weather (R key)');
+                    break;
+            }
+        });
+
+        console.log('Keyboard shortcuts initialized: T (themes), F (fullscreen), R (refresh weather)');
+    }
+
+    toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log('Error attempting to enable fullscreen:', err);
+                this.showNotification('Could not enter fullscreen');
+            });
+        } else {
+            document.exitFullscreen();
+        }
+    }
+
     adjustThemePanelPosition() {
         const themePanel = document.getElementById('theme-panel');
         if (!themePanel) return;
@@ -731,6 +775,37 @@ class StatusDisplay {
         setTimeout(() => {
             notification.style.opacity = '0';
         }, 3000);
+    }
+
+    // Add missing changeTheme method
+    changeTheme(themePath) {
+        const styleDropdown = document.getElementById('style-dropdown');
+        const mainStyle = document.getElementById('main-style');
+        
+        if (styleDropdown && mainStyle) {
+            this.applyStyle(themePath, styleDropdown, mainStyle);
+            this.currentThemeIndex = this.themes.indexOf(themePath);
+            
+            // Update dropdown to match
+            styleDropdown.value = themePath;
+            
+            // Save to localStorage
+            localStorage.setItem('selectedStyle', themePath);
+            
+            console.log('Changed to theme:', themePath);
+        }
+    }
+
+    // Add missing cycleTheme method
+    cycleTheme() {
+        this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
+        const nextTheme = this.themes[this.currentThemeIndex];
+        this.changeTheme(nextTheme);
+        
+        // Show notification
+        this.showNotification(`Theme: ${this.getThemeName(nextTheme)}`);
+        
+        console.log('Cycled to theme:', nextTheme);
     }
 }
 
