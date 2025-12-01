@@ -4,7 +4,7 @@
 
 ### 1. AtomicClockDisplay-iOS.zip (82KB) ⭐ iOS Recommended
 
-**Perfect for iPhone/iPad users**
+#### Perfect for iPhone/iPad users
 
 - ✅ Super simple Files app setup
 - ✅ Touch-optimized interface
@@ -14,7 +14,7 @@
 
 ### 2. AtomicClockDisplay-Complete.zip (281KB) 🌐 Full Package
 
-**Complete deployment for all platforms**
+#### Complete deployment for all platforms
 
 - ✅ Web application
 - ✅ Local kiosk setup

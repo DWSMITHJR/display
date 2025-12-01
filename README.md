@@ -135,6 +135,7 @@ display/
 ## 📚 **Documentation & Guides**
 
 ### 🚀 **Deployment & Installation**
+
 - [📱 iOS Loading Guide](deploy/AtomicClockDisplay-Complete/iOS_LOADING_GUIDE.md) - Complete iOS setup instructions
 - [📦 Deployment Ready](deploy/DEPLOYMENT_READY.md) - All deployment packages and instructions
 - [📋 Installation Guide](INSTALL.md) - Detailed installation instructions
@@ -142,14 +143,17 @@ display/
 - [🧹 Cleanup Guide](CLEANUP.md) - Project cleanup and maintenance
 
 ### ⚙️ **Technical Documentation**
+
 - [🔧 Optimization & Hardening](OPTIMIZATION_HARDENING_COMPLETE.md) - Performance optimizations
 - [🧪 Test Report](TEST_REPORT.md) - Comprehensive testing results
 - [📊 Test Data](TEST_REPORT.json) - Testing data and metrics
 
 ### 🎨 **Theme System**
+
 - [🎭 Theme Rotation Guide](THEME_ROTATION_GUIDE.md) - Automatic theme cycling
 
 ### 📱 **Platform-Specific Guides**
+
 - [🤖 Android Build](android/README.md) - Android app development
 - [📱 iOS Build](ios/README.md) - iOS app development
 
