@@ -139,6 +139,9 @@ display/
 - [🧪 Test Report](TEST_REPORT.md) - Comprehensive testing results
 - [🔍 Final Lint Assessment](FINAL_LINT_ASSESSMENT.md) - Code quality assessment
 - [🏗️ Final Build Status](FINAL_BUILD_STATUS.md) - Build configuration and status
+- [🧪 Final Test & Fix](FINAL_TEST_AND_FIX_COMPLETE.md) - Complete testing and fixes
+- [📋 HTML Standards Fixed](HTML_STANDARDS_FIXED.md) - HTML compliance improvements
+- [📦 Deployment Optimization](DEPLOYMENT_OPTIMIZATION_COMPLETE.md) - Deployment enhancements
 
 ### 🎨 **Theme System**
 
@@ -146,6 +149,10 @@ display/
 - [🎨 Themes Optimized](THEMES_OPTIMIZED.md) - Theme system optimizations
 - [📱 Theme Panel Enhancements](THEME_PANEL_DRAGGING_ENHANCED.md) - Draggable theme panel
 - [🔄 Theme Selection Fixes](THEME_SELECTION_FIXED.md) - Theme selection improvements
+- [🎨 Themes & Checkbox Fixed](THEMES_AND_CHECKBOX_FIXED.md) - Theme system fixes
+- [⚙️ Theme Panel Optimization](THEME_PANEL_OPTIMIZATION_COMPLETE.md) - Panel performance
+- [🔄 Theme Panel Reversion](THEME_PANEL_REVERSION_COMPLETE.md) - Panel changes
+- [✅ Theme Rotation Complete](THEME_ROTATION_COMPLETE.md) - Full rotation system
 
 ### 📱 **Mobile & Responsive**
 
@@ -162,7 +169,6 @@ display/
 ### 🛠️ **Development & Maintenance**
 
 - [✅ All Fixes Complete](ALL_FIXES_COMPLETE.md) - Comprehensive bug fixes
-- [🔄 All Updates Complete](ALL_UPDATED_COMPLETE.md) - Complete update history
 - [🧹 Cleanup Guide](CLEANUP.md) - Project cleanup and maintenance
 - [📝 Commit Validation](COMMIT_VALIDATION_COMPLETE.md) - Commit standards and validation
 
@@ -172,6 +178,8 @@ display/
 - [🏷️ Name Changes](NAME_CHANGE_COMPLETED.md) - Project naming history
 - [📋 Status Section](STATUS_SECTION_ENLARGED.md) - Status display improvements
 - [🔄 Auto-Rotate Verification](AUTO_ROTATE_VERIFICATION_COMPLETE.md) - Theme rotation verification
+- [📦 Deploy Guide](DEPLOY.md) - Basic deployment instructions
+- [✅ All Updates Complete](ALL_UPDATED_COMPLETE.md) - Complete update history
 
 ---
 
