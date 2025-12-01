@@ -8,7 +8,7 @@
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 
 /* Security: Prevent text selection in kiosk mode */
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);color:#fff;height:100vh;width:100vw;overflow:hidden;margin:0;padding:0;position:relative}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);color:#fff;height:100vh;width:100vw;overflow:hidden;margin:0;padding:0;position:relative;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
 /* Performance: GPU acceleration for smooth animations */
 .container{display:flex;flex-direction:column;height:100vh;width:100vw;padding:2rem;gap:2rem;max-height:100vh;max-width:100vw;box-sizing:border-box;will-change:transform}
@@ -60,11 +60,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 
 .weather-detail-row{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.1)}
 
-.weather-detail-label{font-size:clamp(0.8rem,1.5vw,1rem);opacity:0.7;user-select:none}
+.weather-detail-label{font-size:clamp(0.8rem,1.5vw,1rem);opacity:0.7;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
-.weather-detail-value{font-size:clamp(0.8rem,1.5vw,1rem);font-weight:400;text-shadow:0 1px 3px rgba(0,0,0,0.2);user-select:none}
+.weather-detail-value{font-size:clamp(0.8rem,1.5vw,1rem);font-weight:400;text-shadow:0 1px 3px rgba(0,0,0,0.2);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
-.weather-update-time{font-size:clamp(0.7rem,1.2vw,0.8rem);opacity:0.6;text-align:center;margin-top:0.5rem;user-select:none}
+.weather-update-time{font-size:clamp(0.7rem,1.2vw,0.8rem);opacity:0.6;text-align:center;margin-top:0.5rem;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
 /* Performance: Optimized animations */
 @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
@@ -74,15 +74,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;b
 @keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
 
 /* Security: Hardened theme selector */
-.style-selector{position:fixed;top:12px;right:12px;z-index:1000;background:rgba(0,0,0,0.85);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;box-shadow:0 4px 20px rgba(0,0,0,0.3),0 2px 8px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.1);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;cursor:move;-webkit-user-select:none;user-select:none;transition:all 0.2s cubic-bezier(0.25,0.46,0.45,0.94);min-width:160px;max-width:200px;opacity:0.9;height:auto;overflow:visible;will-change:transform;contain:layout style}
+.style-selector{position:fixed;top:12px;right:12px;z-index:1000;background:rgba(0,0,0,0.85);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:8px 10px;box-shadow:0 4px 20px rgba(0,0,0,0.3),0 2px 8px rgba(0,0,0,0.2),inset 0 1px 0 rgba(255,255,255,0.1);display:flex;flex-direction:column;align-items:center;gap:8px;font-size:12px;cursor:move;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;transition:all 0.2s cubic-bezier(0.25,0.46,0.45,0.94);min-width:160px;max-width:200px;opacity:0.9;height:auto;overflow:visible;will-change:transform;contain:layout style}
 
 .style-selector:hover{opacity:1;transform:translateY(-1px);box-shadow:0 6px 25px rgba(0,0,0,0.4),0 4px 12px rgba(0,0,0,0.3)}
 
 .style-selector:active{transform:translateY(0)}
 
-.style-selector::before{content:'⋮⋮';position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:8px;color:rgba(255,255,255,0.3);letter-spacing:2px;user-select:none}
+.style-selector::before{content:'⋮⋮';position:absolute;top:2px;left:50%;transform:translateX(-50%);font-size:8px;color:rgba(255,255,255,0.3);letter-spacing:2px;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
-.style-selector-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.7);margin-bottom:4px;text-shadow:0 1px 2px rgba(0,0,0,0.5);user-select:none}
+.style-selector-label{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:rgba(255,255,255,0.7);margin-bottom:4px;text-shadow:0 1px 2px rgba(0,0,0,0.5);-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
 
 /* Security: Safe form controls */
 .style-selector select{width:100%;background:rgba(255,255,255,0.1);color:#fff;border:1px solid rgba(255,255,255,0.2);border-radius:4px;padding:6px 8px;font-size:10px;font-weight:500;cursor:pointer;outline:none;transition:all 0.2s ease;-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 12 12"><path fill="rgba(255,255,255,0.6)" d="M6 9L1 4h10z"/></svg>');background-repeat:no-repeat;background-position:right 6px center;background-size:12px;padding-right:20px;will-change:transform}
@@ -159,7 +159,7 @@ body.fullscreen .style-selector:hover{opacity:0.8}
 
 /* Performance: High DPI displays */
 @media (-webkit-min-device-pixel-ratio:2),(min-resolution:192dpi){
-.weather-icon{image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges}
+.weather-icon{image-rendering:-webkit-optimize-contrast;image-rendering:crisp-edges;image-rendering:pixelated}
 }
 
 /* Performance: Dark mode support */
@@ -308,10 +308,7 @@ perspective:1000px;
 }
 
 /* Security: Safe image rendering */
-.safe-image{
-image-rendering:auto;
-image-rendering:-webkit-optimize-contrast;
-}
+.safe-image{image-rendering:auto;image-rendering:-webkit-optimize-contrast;image-rendering:pixelated}
 
 /* Performance: Memory-efficient animations */
 .memory-efficient{
@@ -471,6 +468,8 @@ contain:layout;
 /* Security: Final security hardening */
 .security-final{
 pointer-events:auto;
-user-select:none;
 -webkit-user-select:none;
+-moz-user-select:none;
+-ms-user-select:none;
+user-select:none;
 }
