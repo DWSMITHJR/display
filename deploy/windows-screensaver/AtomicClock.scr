@@ -40,8 +40,7 @@ class WindowsScreenSaver:
                 'http://localhost:8080/index.final.html',
                 fullscreen=True,
                 frameless=True,
-                easy_drag=False,
-                on_closed=self.on_closed
+                easy_drag=False
             )
             
             # Configure window properties
@@ -66,8 +65,7 @@ class WindowsScreenSaver:
                 width=320,
                 height=240,
                 frameless=True,
-                resizable=False,
-                on_closed=self.on_closed
+                resizable=False
             )
         except Exception as e:
             print(f"Error creating preview: {e}")
@@ -82,8 +80,7 @@ class WindowsScreenSaver:
                 'http://localhost:8080/?config=true',
                 width=600,
                 height=400,
-                resizable=True,
-                on_closed=self.on_closed
+                resizable=True
             )
         except Exception as e:
             print(f"Error creating config: {e}")
