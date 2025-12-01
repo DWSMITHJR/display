@@ -7,23 +7,27 @@ This package contains everything you need to deploy the Atomic Clock & Weather D
 ## 📦 What's Included
 
 ### Core Application
+
 - `index.html` - Main web application
 - `style.css` - Responsive styles & themes
 - `script.js` - Core functionality (60KB)
 
 ### Theme System
+
 - `styles/` - 12 beautiful themes
   - Dark, Ocean, Sunset, Forest
   - Cyberpunk, Galaxy, Aurora
   - Vintage, Minimal, Neon, Candy
 
 ### Launch Scripts
+
 - `START.bat` - Quick start (Windows)
 - `launch.bat` - Alternative launcher
 - `launch.ps1` - PowerShell launcher
 - `open.html` - Simple opener
 
 ### Documentation
+
 - `README.md` - Complete documentation
 - `INSTALL.md` - Installation guide
 - `DEPLOY.md` - Deployment instructions
@@ -33,22 +37,26 @@ This package contains everything you need to deploy the Atomic Clock & Weather D
 - `THEME_ROTATION_GUIDE.md` - Theme system guide
 
 ### Platform Builds
+
 - `android/` - Android build files
 - `ios/` - iOS build files
 
 ## 🚀 Quick Start
 
 ### Web/Local Deployment
+
 1. **Extract** this package
 2. **Double-click** `START.bat` (Windows) or open `index.html`
 3. **Enjoy!** ⚡
 
 ### iOS Deployment
+
 1. **Copy** `index.html`, `style.css`, `script.js`, and `styles/` to iOS Files app
 2. **Open** `index.html` in Safari
 3. **Add to Home Screen**
 
 ### Android Deployment
+
 1. **Use** the files in `android/` directory
 2. **Follow** the Android build instructions
 
@@ -95,12 +103,15 @@ This package contains everything you need to deploy the Atomic Clock & Weather D
 ## 🛠️ Advanced Setup
 
 ### Server Mode (Full Features)
+
 ```bash
 python server.py
 ```
+
 Then access from any device on your network.
 
 ### Kiosk Mode
+
 - Press **F11** for fullscreen
 - Enable **auto-refresh** for continuous display
 - Use **theme rotation** for dynamic backgrounds
@@ -108,6 +119,7 @@ Then access from any device on your network.
 ## 📖 Documentation
 
 See the individual documentation files for detailed information:
+
 - Installation instructions in `INSTALL.md`
 - Deployment guide in `DEPLOY.md`
 - Technical details in `OPTIMIZATION_HARDENING_COMPLETE.md`
@@ -115,7 +127,7 @@ See the individual documentation files for detailed information:
 
 ---
 
-## 🎉 Ready in 5 Seconds!
+## 🎉 Ready in 5 Seconds
 
 1. Extract the package
 2. Open `index.html`  
