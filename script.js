@@ -24,7 +24,9 @@ class StatusDisplay {
         this.initStyleSelector();
         this.initFullscreen();
         this.startClock();
-        await this.updateWeather();
+        
+        // Ensure weather always populates with retry logic
+        await this.ensureWeatherPopulates();
         
         // Add click-to-refresh weather functionality
         this.initWeatherRefresh();
@@ -38,8 +40,10 @@ class StatusDisplay {
         // Update every second
         setInterval(() => this.updateAll(), 1000);
         
-        // Weather updates every 10 minutes
-        setInterval(() => this.updateWeather(), 600000);
+        // Weather updates every 10 minutes with retry
+        setInterval(async () => {
+            await this.ensureWeatherPopulates();
+        }, 600000);
         
         // Ensure text is not cropped on initialization
         setTimeout(() => this.ensureTextNotCropped(), 500);
@@ -48,8 +52,90 @@ class StatusDisplay {
         window.addEventListener('resize', () => {
             setTimeout(() => this.ensureTextNotCropped(), 200);
         });
+        
+        // Ensure auto-rotate is working
+        this.verifyAutoRotateFunctionality();
     }
 
+    async ensureWeatherPopulates() {
+        console.log('Ensuring weather populates...');
+        let attempts = 0;
+        const maxAttempts = 3;
+        
+        while (attempts < maxAttempts) {
+            try {
+                await this.updateWeather();
+                
+                // Verify weather data is populated
+                if (this.weatherData && this.weatherData.temperature && this.weatherData.location) {
+                    console.log('Weather populated successfully on attempt:', attempts + 1);
+                    return true;
+                } else {
+                    console.warn('Weather data incomplete, retrying...');
+                    attempts++;
+                    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+                }
+            } catch (error) {
+                console.error('Weather update failed on attempt', attempts + 1, ':', error);
+                attempts++;
+                if (attempts < maxAttempts) {
+                    await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
+                }
+            }
+        }
+        
+        // If all attempts failed, ensure fallback is set
+        console.log('All weather attempts failed, ensuring fallback data');
+        this.setWeatherFallback();
+        return false;
+    }
+    
+    verifyAutoRotateFunctionality() {
+        console.log('Verifying auto-rotate functionality...');
+        
+        const autoRotateCheckbox = document.getElementById('auto-rotate');
+        const autoRotateStatus = document.getElementById('auto-rotate-status');
+        
+        if (autoRotateCheckbox) {
+            // Check if auto-rotate was previously enabled
+            const savedAutoRotate = localStorage.getItem('autoRotateThemes') === 'true';
+            
+            if (savedAutoRotate) {
+                console.log('Auto-rotate was previously enabled, restarting...');
+                autoRotateCheckbox.checked = true;
+                this.startAutoRotate();
+                this.updateAutoRotateStatus(true);
+            } else {
+                this.updateAutoRotateStatus(false);
+            }
+            
+            // Add verification listener
+            autoRotateCheckbox.addEventListener('change', (e) => {
+                const isChecked = e.target.checked;
+                console.log('Auto-rotate checkbox changed:', isChecked);
+                
+                if (isChecked) {
+                    console.log('Starting auto-rotate verification...');
+                    this.startAutoRotate();
+                    this.updateAutoRotateStatus(true);
+                    
+                    // Verify it's actually running
+                    setTimeout(() => {
+                        if (!this.autoRotateInterval) {
+                            console.warn('Auto-rotate failed to start, retrying...');
+                            this.startAutoRotate();
+                        }
+                    }, 1000);
+                } else {
+                    this.stopAutoRotate();
+                    this.updateAutoRotateStatus(false);
+                }
+            });
+        }
+        
+        console.log('Auto-rotate functionality verification complete');
+    }
+    
     initWeatherRefresh() {
         const weatherDisplay = document.querySelector('.weather-display');
         if (weatherDisplay) {
@@ -374,30 +460,43 @@ class StatusDisplay {
     }
 
     updateTime() {
+        // Force Atlanta timezone for consistent display
         const now = new Date();
         
-        // Update time
+        // Update time in Atlanta timezone
         const timeDisplay = document.getElementById('time-display');
         if (timeDisplay) {
-            timeDisplay.textContent = this.formatTime(now);
+            timeDisplay.textContent = this.formatTimeAtlanta(now);
         }
         
-        // Update date
+        // Update date in Atlanta timezone
         const dateDisplay = document.getElementById('date-display');
         if (dateDisplay) {
-            dateDisplay.textContent = this.formatDate(now);
+            dateDisplay.textContent = this.formatDateAtlanta(now);
         }
         
-        // Update day
+        // Update day in Atlanta timezone
         const dayDisplay = document.getElementById('day-name');
         if (dayDisplay) {
-            dayDisplay.textContent = this.formatDay(now);
+            dayDisplay.textContent = this.formatDayAtlanta(now);
         }
         
-        // Update timezone
+        // Update timezone display
         const timezoneDisplay = document.getElementById('timezone-display');
         if (timezoneDisplay) {
-            timezoneDisplay.textContent = this.getTimezone();
+            timezoneDisplay.textContent = 'Eastern Time (Atlanta, GA)';
+        }
+        
+        // Update city display
+        const cityDisplay = document.getElementById('city-display');
+        if (cityDisplay) {
+            cityDisplay.textContent = 'Atlanta, Georgia';
+        }
+        
+        // Update time period
+        const timePeriod = document.getElementById('time-period');
+        if (timePeriod) {
+            timePeriod.textContent = this.getTimeOfDay(now);
         }
     }
 
@@ -410,6 +509,16 @@ class StatusDisplay {
         });
     }
 
+    formatTimeAtlanta(date) {
+        return date.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: true,
+            timeZone: 'America/New_York'
+        });
+    }
+
     formatDate(date) {
         return date.toLocaleDateString('en-US', {
             month: 'long',
@@ -418,10 +527,34 @@ class StatusDisplay {
         });
     }
 
+    formatDateAtlanta(date) {
+        return date.toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric',
+            timeZone: 'America/New_York'
+        });
+    }
+
     formatDay(date) {
         return date.toLocaleDateString('en-US', {
             weekday: 'long'
         });
+    }
+
+    formatDayAtlanta(date) {
+        return date.toLocaleDateString('en-US', {
+            weekday: 'long',
+            timeZone: 'America/New_York'
+        });
+    }
+
+    getTimeOfDay(date) {
+        const hour = date.getHours();
+        if (hour < 12) return 'Morning';
+        if (hour < 17) return 'Afternoon';
+        if (hour < 21) return 'Evening';
+        return 'Night';
     }
 
     getTimezone() {
