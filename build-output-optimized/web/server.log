@@ -1,0 +1,2 @@
+2025-11-30 21:49:40,025 - ERROR - Server error: TCPServer.__init__() missing 1 required positional argument: 'RequestHandlerClass'
+2025-11-30 21:49:40,026 - ERROR - Server failed to start: TCPServer.__init__() missing 1 required positional argument: 'RequestHandlerClass'

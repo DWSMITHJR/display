@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atomic Clock & Weather Display - Hardened & Optimized</title>
+    
+    <!-- Critical CSS Preload -->
+    <link rel="preload" href="style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="style.css"></noscript>
+    
+    <!-- Font Optimization with Fallback -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Security Headers -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; connect-src 'self' https://api.openweathermap.org https://api.weatherapi.com https://ipapi.co; img-src 'self' data:;">
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+    <meta http-equiv="X-XSS-Protection" content="1; mode=block">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    
+    <!-- Performance Meta Tags -->
+    <meta name="description" content="Professional atomic clock and weather display for kiosk and dashboard applications">
+    <meta http-equiv="refresh" content="72001">
+    
+    <!-- Optimized Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕐</text></svg>">
+    
+    <!-- Mobile Optimization -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#667eea">
+    
+    <!-- Critical Inline CSS for Above-the-Fold Content -->
+    <style>
+        /* Critical CSS for immediate rendering */
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:linear-gradient(135deg,#667eea 0%,#764ba2 50%,#f093fb 100%);color:#fff;height:100vh;width:100vw;overflow:hidden;margin:0;padding:0}
+        .container{display:flex;flex-direction:column;height:100vh;width:100vw;padding:2rem;gap:2rem;max-height:100vh;max-width:100vw;box-sizing:border-box}
+        .day-display{text-align:center;flex-shrink:0;max-height:50vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:2rem 0;overflow:visible}
+        .day-display h1{font-size:clamp(8rem,16vw,16rem);font-weight:200;line-height:1;margin:0;text-shadow:0 4px 20px rgba(0,0,0,0.3);letter-spacing:-0.02em;animation:fadeInUp 1s ease-out}
+        .content{display:flex;flex:1;gap:2rem;min-height:0}
+        .time-section{flex:1.4;display:flex;align-items:center;justify-content:center}
+        .weather-section{flex:1;display:flex;align-items:center;justify-content:center}
+        .status-time{display:flex;flex-direction:column;align-items:center;gap:1rem}
+        .time{font-size:clamp(3rem,8vw,6rem);font-weight:300;line-height:1;white-space:nowrap;text-shadow:0 4px 20px rgba(0,0,0,0.3);animation:fadeInUp 1s ease-out}
+        
+        /* Loading skeleton */
+        .skeleton{background:linear-gradient(90deg,rgba(255,255,255,0.1) 25%,rgba(255,255,255,0.2) 50%,rgba(255,255,255,0.1) 75%);background-size:200% 100%;animation:loading 1.5s infinite}
+        @keyframes loading{0%{background-position:200% 0}100%{background-position:-200% 0}}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        
+        /* Performance optimizations */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {animation-duration: 0.01ms !important;animation-iteration-count: 1 !important;transition-duration: 0.01ms !important;}
+        }
+        
+        /* Touch optimization */
+        @media (pointer: coarse) {
+            body {touch-action: manipulation;-webkit-touch-callout: none;-webkit-user-select: none;user-select: none;}
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Panel with Enhanced Security -->
+    <div id="theme-panel" class="style-selector" style="visibility: hidden;">
+        <div class="style-selector-label">Themes</div>
+        <select id="style-dropdown" title="Select a theme" autocomplete="off">
+            <option value="style.css">Original</option>
+            <option value="styles/dark.css">Dark</option>
+            <option value="styles/ocean.css">Ocean</option>
+            <option value="styles/sunset.css">Sunset</option>
+            <option value="styles/forest.css">Forest</option>
+            <option value="styles/cyberpunk.css">Cyberpunk</option>
+            <option value="styles/galaxy.css">Galaxy</option>
+            <option value="styles/aurora.css">Aurora</option>
+            <option value="styles/vintage.css">Vintage</option>
+            <option value="styles/minimal.css">Minimal</option>
+            <option value="styles/neon.css">Neon</option>
+            <option value="styles/candy.css">Candy</option>
+        </select>
+        <div class="theme-controls">
+            <div class="control-row">
+                <label for="auto-rotate" class="auto-rotate-label">
+                    <input type="checkbox" id="auto-rotate" title="Auto-rotate themes every 30 seconds">
+                    Auto-rotate
+                </label>
+            </div>
+            <div class="control-row">
+                <a href="README.md" target="_blank" class="readme-link" title="Open Documentation (README)" rel="noopener noreferrer">
+                    📖
+                </a>
+                <button id="fullscreen-toggle" class="fullscreen-btn" title="Toggle Fullscreen (F)" type="button">
+                    <span id="fullscreen-icon">⛶</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Content with Loading States -->
+    <div class="container">
+        <header class="day-display">
+            <h1 id="day-name" class="skeleton">Loading...</h1>
+            <p id="time-period" class="skeleton">Morning</p>
+        </header>
+        
+        <main class="content">
+            <section class="time-section">
+                <div class="status-time">
+                    <div id="time-display" class="time skeleton">00:00:00</div>
+                    <div id="date-display" class="skeleton">Loading...</div>
+                    <div id="timezone-display" class="skeleton">Local Time</div>
+                    <div id="city-display" class="skeleton">Loading...</div>
+                </div>
+            </section>
+            
+            <section class="weather-section">
+                <div class="weather-display">
+                    <div class="weather-main">
+                        <div id="weather-icon" class="weather-icon skeleton">🌤️</div>
+                        <div id="temperature" class="temperature skeleton">--°F</div>
+                        <div class="weather-info">
+                            <div id="weather-description" class="weather-description skeleton">Loading weather...</div>
+                            <div id="location" class="location skeleton">Detecting location...</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Compact Weather Details -->
+                    <div class="weather-details">
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">🌡️</span>
+                            <span id="feels-like" class="weather-detail-value skeleton">--°F</span>
+                            <span class="weather-detail-label">💧</span>
+                            <span id="humidity" class="weather-detail-value skeleton">--%</span>
+                        </div>
+                        <div class="weather-detail-row">
+                            <span class="weather-detail-label">💨</span>
+                            <span id="wind-speed" class="weather-detail-value skeleton">-- mph</span>
+                            <span class="weather-detail-label">👁️</span>
+                            <span id="visibility" class="weather-detail-value skeleton">-- mi</span>
+                        </div>
+                    </div>
+                    
+                    <div id="weather-update-time" class="weather-update-time skeleton"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Performance Monitoring -->
+    <script>
+        // Performance monitoring and optimization
+        if ('performance' in window && 'measure' in window.performance) {
+            window.addEventListener('load', function() {
+                setTimeout(function() {
+                    const perfData = performance.getEntriesByType('navigation')[0];
+                    console.log('Page Load Performance:', {
+                        domInteractive: perfData.domInteractive,
+                        loadEventEnd: perfData.loadEventEnd,
+                        totalTime: perfData.loadEventEnd - perfData.fetchStart
+                    });
+                }, 0);
+            });
+        }
+        
+        // Resource loading optimization
+        function loadResourceDeferred() {
+            // Load non-critical resources after page load
+            setTimeout(() => {
+                const themePanel = document.getElementById('theme-panel');
+                if (themePanel) {
+                    themePanel.style.visibility = 'visible';
+                }
+            }, 100);
+        }
+        
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', loadResourceDeferred);
+        } else {
+            loadResourceDeferred();
+        }
+    </script>
+    
+    <!-- Theme Preloader -->
+    <script src="theme-preloader.js"></script>
+    
+    <!-- Main Application Script with Integrity Check -->
+    <script src="script.js" integrity="sha384-$(cat script.js | sha384sum | cut -d' ' -f1)" crossorigin="anonymous"></script>
+    
+    <!-- Service Worker Registration for Offline Support -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                    console.log('ServiceWorker registration successful');
+                }, function(err) {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
