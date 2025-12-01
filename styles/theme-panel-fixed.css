@@ -90,6 +90,7 @@
     /* Better overflow handling */
     overflow: visible !important;
     min-width: fit-content !important;
+    min-width: -webkit-fill-available !important;
     width: auto !important;
 }
 
@@ -201,12 +202,14 @@
     overflow: visible !important;
     width: 100% !important;
     min-width: fit-content !important;
+    min-width: -webkit-fill-available !important;
 }
 
 .control-row {
     overflow: visible !important;
     width: 100% !important;
     min-width: fit-content !important;
+    min-width: -webkit-fill-available !important;
     justify-content: center !important;
 }
 
@@ -215,6 +218,7 @@
     overflow: visible !important;
     width: 100% !important;
     min-width: fit-content !important;
+    min-width: -webkit-fill-available !important;
     display: flex !important;
     flex-direction: column !important;
     align-items: center !important;
