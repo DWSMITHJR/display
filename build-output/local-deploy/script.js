@@ -32,6 +32,9 @@ class StatusDisplay {
         // Add window resize listener for dynamic adjustment
         this.initResponsiveHandling();
         
+        // Add keyboard shortcuts
+        this.initKeyboardShortcuts();
+        
         // Update every second
         setInterval(() => this.updateAll(), 1000);
         
@@ -82,6 +85,13 @@ class StatusDisplay {
         const savedStyle = localStorage.getItem('selectedStyle');
         if (savedStyle && this.validateStylePath(savedStyle)) {
             this.applyStyle(savedStyle, styleDropdown, mainStyle);
+            // Sync currentThemeIndex with loaded theme
+            this.currentThemeIndex = this.themes.indexOf(savedStyle);
+            console.log('Loaded saved theme:', savedStyle, 'at index:', this.currentThemeIndex);
+        } else {
+            // Set currentThemeIndex to default theme (first in array)
+            this.currentThemeIndex = 0;
+            console.log('Using default theme at index:', this.currentThemeIndex);
         }
         
         // Load auto-rotate setting
@@ -548,6 +558,20 @@ class StatusDisplay {
         console.log('Starting theme auto-rotation');
         this.stopAutoRotate(); // Clear any existing interval
         
+        // Sync currentThemeIndex with currently selected theme
+        const styleDropdown = document.getElementById('style-dropdown');
+        if (styleDropdown) {
+            const currentTheme = styleDropdown.value;
+            const currentIndex = this.themes.indexOf(currentTheme);
+            if (currentIndex !== -1) {
+                this.currentThemeIndex = currentIndex;
+                console.log('Synced currentThemeIndex to:', this.currentThemeIndex, 'for theme:', currentTheme);
+            } else {
+                console.log('Current theme not found in themes array, using index 0');
+                this.currentThemeIndex = 0;
+            }
+        }
+        
         // Show notification that rotation is starting
         this.showNotification('Theme rotation started (30s intervals)');
         
@@ -562,10 +586,10 @@ class StatusDisplay {
             // Double-check that auto-rotate is still enabled before switching
             if (autoRotateCheckbox && autoRotateCheckbox.checked && styleDropdown && mainStyle) {
                 this.applyStyle(nextTheme, styleDropdown, mainStyle);
-                console.log('Auto-rotated to theme:', nextTheme);
+                console.log('Auto-rotated to theme:', nextTheme, '(index:', this.currentThemeIndex, ')');
                 
                 // Show subtle notification for theme change (only in test mode or if debug is enabled)
-                if (window.location.search.includes('debug=true')) {
+                if (window.location.search.includes('debug=true') || window.location.hostname === 'localhost') {
                     this.showNotification(`Theme: ${this.getThemeName(nextTheme)}`);
                 }
             } else {
@@ -574,7 +598,7 @@ class StatusDisplay {
             }
         }, 30000); // Rotate every 30 seconds
         
-        console.log('Auto-rotation started with 30-second intervals');
+        console.log('Auto-rotation started with 30-second intervals from index:', this.currentThemeIndex);
     }
 
     stopAutoRotate() {
@@ -584,6 +608,45 @@ class StatusDisplay {
             this.autoRotateInterval = null;
             this.showNotification('Theme rotation stopped');
         }
+    }
+
+    // Debug function for testing auto-rotate with shorter interval
+    startAutoRotateDebug() {
+        console.log('Starting DEBUG theme auto-rotation (5-second intervals)');
+        this.stopAutoRotate(); // Clear any existing interval
+        
+        // Sync currentThemeIndex with currently selected theme
+        const styleDropdown = document.getElementById('style-dropdown');
+        if (styleDropdown) {
+            const currentTheme = styleDropdown.value;
+            const currentIndex = this.themes.indexOf(currentTheme);
+            if (currentIndex !== -1) {
+                this.currentThemeIndex = currentIndex;
+                console.log('DEBUG: Synced currentThemeIndex to:', this.currentThemeIndex, 'for theme:', currentTheme);
+            }
+        }
+        
+        this.showNotification('DEBUG: Theme rotation started (5s intervals)');
+        
+        this.autoRotateInterval = setInterval(() => {
+            this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
+            const nextTheme = this.themes[this.currentThemeIndex];
+            
+            const styleDropdown = document.getElementById('style-dropdown');
+            const mainStyle = document.getElementById('main-style');
+            const autoRotateCheckbox = document.getElementById('auto-rotate');
+            
+            if (autoRotateCheckbox && autoRotateCheckbox.checked && styleDropdown && mainStyle) {
+                this.applyStyle(nextTheme, styleDropdown, mainStyle);
+                console.log('DEBUG: Auto-rotated to theme:', nextTheme, '(index:', this.currentThemeIndex, ')');
+                this.showNotification(`DEBUG: ${this.getThemeName(nextTheme)}`);
+            } else {
+                console.log('DEBUG: Auto-rotation disabled or elements missing, stopping rotation');
+                this.stopAutoRotate();
+            }
+        }, 5000); // Rotate every 5 seconds for debugging
+        
+        console.log('DEBUG: Auto-rotation started with 5-second intervals from index:', this.currentThemeIndex);
     }
 
     getThemeName(themePath) {
@@ -636,6 +699,47 @@ class StatusDisplay {
         // Initial adjustment
         this.adjustThemePanelPosition();
         this.applyResponsiveAdjustments();
+    }
+
+    initKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Only process shortcuts when not typing in input fields
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                return;
+            }
+
+            switch(e.key.toLowerCase()) {
+                case 't':
+                    e.preventDefault();
+                    this.cycleTheme();
+                    console.log('Keyboard: Cycled theme (T key)');
+                    break;
+                case 'f':
+                    e.preventDefault();
+                    this.toggleFullscreen();
+                    console.log('Keyboard: Toggled fullscreen (F key)');
+                    break;
+                case 'r':
+                    e.preventDefault();
+                    this.updateWeather();
+                    this.showNotification('Weather refreshed');
+                    console.log('Keyboard: Refreshed weather (R key)');
+                    break;
+            }
+        });
+
+        console.log('Keyboard shortcuts initialized: T (themes), F (fullscreen), R (refresh weather)');
+    }
+
+    toggleFullscreen() {
+        if (!document.fullscreenElement) {
+            document.documentElement.requestFullscreen().catch(err => {
+                console.log('Error attempting to enable fullscreen:', err);
+                this.showNotification('Could not enter fullscreen');
+            });
+        } else {
+            document.exitFullscreen();
+        }
     }
 
     adjustThemePanelPosition() {
@@ -731,6 +835,37 @@ class StatusDisplay {
         setTimeout(() => {
             notification.style.opacity = '0';
         }, 3000);
+    }
+
+    // Add missing changeTheme method
+    changeTheme(themePath) {
+        const styleDropdown = document.getElementById('style-dropdown');
+        const mainStyle = document.getElementById('main-style');
+        
+        if (styleDropdown && mainStyle) {
+            this.applyStyle(themePath, styleDropdown, mainStyle);
+            this.currentThemeIndex = this.themes.indexOf(themePath);
+            
+            // Update dropdown to match
+            styleDropdown.value = themePath;
+            
+            // Save to localStorage
+            localStorage.setItem('selectedStyle', themePath);
+            
+            console.log('Changed to theme:', themePath);
+        }
+    }
+
+    // Add missing cycleTheme method
+    cycleTheme() {
+        this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
+        const nextTheme = this.themes[this.currentThemeIndex];
+        this.changeTheme(nextTheme);
+        
+        // Show notification
+        this.showNotification(`Theme: ${this.getThemeName(nextTheme)}`);
+        
+        console.log('Cycled to theme:', nextTheme);
     }
 }
 
