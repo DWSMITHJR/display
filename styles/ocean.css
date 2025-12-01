@@ -46,7 +46,7 @@ body {
     align-items: center;
     padding: 2rem 1rem;
     overflow: visible;
-    gap: 1rem;
+    gap: 1.5rem;
     width: 100%;
 }
 
@@ -427,13 +427,13 @@ body.fullscreen .container {
 @media (max-width: 768px) {
     .container {
         flex-direction: column;
-        gap: 1rem;
+        gap: 1.5rem;
         padding: 1rem;
     }
     
     .content {
         flex-direction: column;
-        gap: 1rem;
+        gap: 1.5rem;
     }
     
     .time-section, .weather-section {
@@ -547,7 +547,7 @@ body.fullscreen .container {
         flex-direction: row;
         justify-content: flex-start;
         align-items: center;
-        gap: 1rem;
+        gap: 1.5rem;
     }
     
     .content {
