@@ -1,0 +1,222 @@
+/* Theme Panel Fixes - Dropdown Text Cropping & Checkbox Validation */
+
+/* Fix dropdown text cropping issues */
+.style-selector select {
+    /* Enhanced width management to prevent text cropping */
+    width: 100% !important;
+    min-width: 140px !important;
+    max-width: 180px !important;
+    
+    /* Text overflow prevention */
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: ellipsis !important; /* Changed from clip to ellipsis */
+    
+    /* Enhanced padding and sizing */
+    padding: 6px 28px 6px 8px !important; /* Increased right padding for arrow */
+    min-height: 28px !important;
+    height: auto !important;
+    
+    /* Font and text optimization */
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    line-height: 1.3 !important;
+    letter-spacing: -0.1px !important;
+    
+    /* Flex alignment for better text positioning */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    
+    /* Background image positioning optimization */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%231a1a1a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 8px center !important; /* Adjusted position */
+    background-size: 12px !important; /* Slightly smaller */
+    
+    /* Container constraints */
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+/* Enhanced theme panel sizing for dropdown */
+.style-selector {
+    /* Increased minimum width to accommodate all theme names */
+    min-width: 180px !important;
+    max-width: 220px !important;
+    width: auto !important;
+    
+    /* Ensure proper overflow handling */
+    overflow: visible !important;
+    
+    /* Enhanced padding for internal elements */
+    padding: 8px 12px !important;
+    
+    /* Better container constraints */
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+/* Option styling to prevent cropping */
+.style-selector select option {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+    overflow: visible !important;
+    text-overflow: none !important;
+    min-width: 120px !important;
+}
+
+/* Enhanced checkbox styling and validation */
+.auto-rotate-label {
+    /* Better spacing and alignment */
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important; /* Increased gap */
+    
+    /* Text optimization */
+    color: white !important;
+    font-size: 10px !important; /* Increased from 9px */
+    font-weight: 600 !important;
+    white-space: nowrap !important;
+    line-height: 1.4 !important;
+    
+    /* Enhanced container */
+    padding: 4px 6px !important; /* Increased padding */
+    border-radius: 4px !important;
+    background: rgba(255, 255, 255, 0.12) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    
+    /* Better overflow handling */
+    overflow: visible !important;
+    min-width: fit-content !important;
+    width: auto !important;
+}
+
+/* Enhanced checkbox styling */
+.auto-rotate-label input[type="checkbox"] {
+    /* Better sizing */
+    width: 12px !important; /* Increased from 10px */
+    height: 12px !important; /* Increased from 10px */
+    
+    /* Enhanced appearance */
+    cursor: pointer !important;
+    accent-color: rgba(255, 255, 255, 0.9) !important;
+    border-radius: 2px !important;
+    
+    /* Better positioning */
+    flex-shrink: 0 !important;
+    margin: 0 !important;
+    
+    /* Enhanced checked state */
+    transition: all 0.2s ease !important;
+}
+
+.auto-rotate-label input[type="checkbox"]:checked {
+    accent-color: rgba(76, 175, 80, 0.95) !important;
+    box-shadow: 0 0 4px rgba(76, 175, 80, 0.6) !important;
+    transform: scale(1.1) !important;
+}
+
+/* Enhanced hover states */
+.auto-rotate-label:hover {
+    background: rgba(255, 255, 255, 0.18) !important;
+    border-color: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-1px) !important;
+    opacity: 1 !important;
+}
+
+/* Status indicator enhancement */
+.auto-rotate-status {
+    /* Better visibility */
+    font-size: 8px !important;
+    font-weight: 600 !important;
+    color: rgba(255, 255, 255, 0.8) !important;
+    margin-left: 2px !important;
+    white-space: nowrap !important;
+}
+
+/* Responsive fixes for dropdown */
+@media (max-width: 600px) {
+    .style-selector {
+        min-width: 160px !important;
+        max-width: 180px !important;
+        font-size: 11px !important;
+    }
+    
+    .style-selector select {
+        min-width: 120px !important;
+        max-width: 150px !important;
+        font-size: 10px !important;
+        padding-right: 26px !important;
+    }
+    
+    .auto-rotate-label {
+        font-size: 9px !important;
+        padding: 3px 5px !important;
+        gap: 5px !important;
+    }
+    
+    .auto-rotate-label input[type="checkbox"] {
+        width: 10px !important;
+        height: 10px !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .style-selector {
+        min-width: 150px !important;
+        max-width: 170px !important;
+    }
+    
+    .style-selector select {
+        min-width: 110px !important;
+        max-width: 140px !important;
+        font-size: 9px !important;
+    }
+}
+
+/* Focus states for accessibility */
+.style-selector select:focus {
+    outline: 2px solid rgba(100, 150, 255, 0.6) !important;
+    outline-offset: 1px !important;
+}
+
+.auto-rotate-label input[type="checkbox"]:focus {
+    outline: 2px solid rgba(100, 150, 255, 0.6) !important;
+    outline-offset: 1px !important;
+}
+
+/* Animation enhancements */
+.style-selector select {
+    transition: all 0.15s ease !important;
+}
+
+.auto-rotate-label {
+    transition: all 0.15s ease !important;
+}
+
+/* Container overflow fixes */
+.theme-controls {
+    overflow: visible !important;
+    width: 100% !important;
+    min-width: fit-content !important;
+}
+
+.control-row {
+    overflow: visible !important;
+    width: 100% !important;
+    min-width: fit-content !important;
+    justify-content: center !important;
+}
+
+/* Enhanced theme content container */
+.theme-content {
+    overflow: visible !important;
+    width: 100% !important;
+    min-width: fit-content !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
