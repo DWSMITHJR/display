@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Rotation Test - Atomic Clock Display</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .test-container {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 10000;
+            text-align: center;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .test-button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .test-button:hover {
+            background: #0056b3;
+        }
+        .test-button.stop {
+            background: #dc3545;
+        }
+        .test-button.stop:hover {
+            background: #c82333;
+        }
+        .status {
+            margin: 10px 0;
+            font-size: 14px;
+        }
+        .theme-info {
+            font-family: monospace;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px;
+            border-radius: 3px;
+            margin: 5px 0;
+        }
+        .test-instructions {
+            margin-top: 15px;
+            font-size: 12px;
+            opacity: 0.8;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            z-index: 10000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            -webkit-backdrop-filter: blur(10px);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Copy the main display structure -->
+    <div class="display-container">
+        <div class="time-section">
+            <div class="day-panel">
+                <div id="day-name" class="day-name">Loading...</div>
+                <div id="date" class="date">Loading...</div>
+            </div>
+            <div class="time-panel">
+                <div id="time" class="time">Loading...</div>
+                <div id="seconds" class="seconds">00</div>
+                <div id="period" class="period">AM</div>
+            </div>
+        </div>
+        
+        <main class="main-section">
+            <section class="weather-section">
+                <div class="weather-display">
+                    <div class="weather-main">
+                        <div id="weather-icon" class="weather-icon">🌡️</div>
+                        <div id="temperature" class="temperature">--°F</div>
+                        <div id="weather-description" class="weather-description">Loading...</div>
+                        <div id="location" class="location">Atlanta, GA</div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Theme Panel - Single Row -->
+    <div id="theme-panel" class="style-selector">
+        <select id="style-dropdown" title="Select theme">
+            <option value="style.css">Original</option>
+            <option value="styles/dark.css">Dark</option>
+            <option value="styles/ocean.css">Ocean</option>
+            <option value="styles/sunset.css">Sunset</option>
+            <option value="styles/forest.css">Forest</option>
+            <option value="styles/cyberpunk.css">Cyberpunk</option>
+            <option value="styles/galaxy.css">Galaxy</option>
+            <option value="styles/aurora.css">Aurora</option>
+            <option value="styles/vintage.css">Vintage</option>
+            <option value="styles/minimal.css">Minimal</option>
+            <option value="styles/neon.css">Neon</option>
+            <option value="styles/candy.css">Candy</option>
+        </select>
+        
+        <label for="auto-rotate" class="auto-rotate-label">
+            <input type="checkbox" id="auto-rotate" title="Auto-rotate themes every 30 seconds">
+            Auto-rotate
+        </label>
+    </div>
+
+    <!-- Test Controls -->
+    <div class="test-container">
+        <h3>🎨 Theme Rotation Test</h3>
+        <div class="status" id="rotation-status">Status: Stopped</div>
+        <div class="theme-info" id="current-theme">Current: style.css</div>
+        <div class="theme-info" id="rotation-count">Rotations: 0</div>
+        
+        <button class="test-button" onclick="startTestRotation()">Start Test (5s)</button>
+        <button class="test-button stop" onclick="stopTestRotation()">Stop Test</button>
+        <button class="test-button" onclick="testAllThemes()">Test All Themes</button>
+        <button class="test-button" onclick="closeTest()">Close Test</button>
+        
+        <div class="test-instructions">
+            Test mode uses 5-second intervals for faster testing<br>
+            Normal mode uses 30-second intervals
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        let testInterval = null;
+        let rotationCount = 0;
+        let originalStartAutoRotate = null;
+        let testMode = false;
+
+        // Override the startAutoRotate method for testing
+        function overrideForTest() {
+            const display = window.display || document.querySelector('.status-display');
+            if (display && !originalStartAutoRotate) {
+                originalStartAutoRotate = display.startAutoRotate.bind(display);
+                
+                display.startAutoRotate = function() {
+                    console.log('Starting TEST theme auto-rotation (5s intervals)');
+                    this.stopAutoRotate(); // Clear any existing interval
+                    
+                    this.autoRotateInterval = setInterval(() => {
+                        this.currentThemeIndex = (this.currentThemeIndex + 1) % this.themes.length;
+                        const nextTheme = this.themes[this.currentThemeIndex];
+                        
+                        const styleDropdown = document.getElementById('style-dropdown');
+                        const mainStyle = document.getElementById('main-style');
+                        const autoRotateCheckbox = document.getElementById('auto-rotate');
+                        
+                        // Double-check that auto-rotate is still enabled before switching
+                        if (autoRotateCheckbox && autoRotateCheckbox.checked && styleDropdown && mainStyle) {
+                            this.applyStyle(nextTheme, styleDropdown, mainStyle);
+                            console.log('Auto-rotated to theme:', nextTheme);
+                            updateTestStatus(nextTheme);
+                        } else {
+                            console.log('Auto-rotation disabled or elements missing, stopping rotation');
+                            this.stopAutoRotate();
+                            updateTestStatus(null);
+                        }
+                    }, 5000); // Test mode: 5 seconds instead of 30
+                    
+                    console.log('Test auto-rotation started with 5-second intervals');
+                    updateTestStatus('started');
+                };
+                
+                display.stopAutoRotate = function() {
+                    if (this.autoRotateInterval) {
+                        console.log('Stopping theme auto-rotation');
+                        clearInterval(this.autoRotateInterval);
+                        this.autoRotateInterval = null;
+                        updateTestStatus('stopped');
+                    }
+                };
+            }
+        }
+
+        function updateTestStatus(theme) {
+            const statusEl = document.getElementById('rotation-status');
+            const currentThemeEl = document.getElementById('current-theme');
+            const countEl = document.getElementById('rotation-count');
+            
+            if (theme === 'started') {
+                statusEl.textContent = 'Status: Running (Test Mode - 5s)';
+                statusEl.style.color = '#28a745';
+            } else if (theme === 'stopped') {
+                statusEl.textContent = 'Status: Stopped';
+                statusEl.style.color = '#dc3545';
+            } else if (theme) {
+                rotationCount++;
+                currentThemeEl.textContent = `Current: ${theme}`;
+                countEl.textContent = `Rotations: ${rotationCount}`;
+            }
+        }
+
+        function startTestRotation() {
+            const autoRotateCheckbox = document.getElementById('auto-rotate');
+            if (!autoRotateCheckbox.checked) {
+                autoRotateCheckbox.checked = true;
+                autoRotateCheckbox.dispatchEvent(new Event('change'));
+            }
+            
+            if (!testMode) {
+                overrideForTest();
+                testMode = true;
+            }
+            
+            rotationCount = 0;
+            updateTestStatus('started');
+        }
+
+        function stopTestRotation() {
+            const autoRotateCheckbox = document.getElementById('auto-rotate');
+            if (autoRotateCheckbox.checked) {
+                autoRotateCheckbox.checked = false;
+                autoRotateCheckbox.dispatchEvent(new Event('change'));
+            }
+            
+            if (testInterval) {
+                clearInterval(testInterval);
+                testInterval = null;
+            }
+            
+            updateTestStatus('stopped');
+        }
+
+        function testAllThemes() {
+            const themes = [
+                'style.css', 'styles/dark.css', 'styles/ocean.css', 'styles/sunset.css',
+                'styles/forest.css', 'styles/cyberpunk.css', 'styles/galaxy.css',
+                'styles/aurora.css', 'styles/vintage.css', 'styles/minimal.css',
+                'styles/neon.css', 'styles/candy.css'
+            ];
+            
+            let index = 0;
+            stopTestRotation();
+            
+            testInterval = setInterval(() => {
+                if (index < themes.length) {
+                    const styleDropdown = document.getElementById('style-dropdown');
+                    const mainStyle = document.getElementById('main-style');
+                    
+                    if (styleDropdown && mainStyle) {
+                        styleDropdown.value = themes[index];
+                        styleDropdown.dispatchEvent(new Event('change'));
+                        updateTestStatus(themes[index]);
+                        index++;
+                    }
+                } else {
+                    clearInterval(testInterval);
+                    testInterval = null;
+                    updateTestStatus('stopped');
+                }
+            }, 1000); // 1 second per theme for quick testing
+        }
+
+        function closeTest() {
+            stopTestRotation();
+            document.querySelector('.test-container').style.display = 'none';
+        }
+
+        // Initialize test status when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                const currentTheme = document.getElementById('style-dropdown').value;
+                document.getElementById('current-theme').textContent = `Current: ${currentTheme}`;
+            }, 1000);
+        });
+    </script>
+</body>
+</html>
