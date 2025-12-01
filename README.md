@@ -118,6 +118,53 @@ display/
 
 ---
 
+## 📚 **Documentation & Guides**
+
+### 🚀 **Deployment & Installation**
+- [📱 iOS Loading Guide](deploy/AtomicClockDisplay-Complete/iOS_LOADING_GUIDE.md) - Complete iOS setup instructions
+- [📦 Deployment Ready](deploy/DEPLOYMENT_READY.md) - All deployment packages and instructions
+- [🖥️ Windows Screen Saver](deploy/windows-screensaver/README.md) - Windows screensaver deployment
+- [🤖 Android Build Guide](android/ANDROID_BUILD_GUIDE.md) - Android app development guide
+- [📋 Installation Guide](INSTALL.md) - Detailed installation instructions
+- [🌐 Web Installation](WEB_INSTALLATION_SIMPLIFIED.md) - Simplified web setup
+
+### ⚙️ **Technical Documentation**
+- [🔧 Optimization & Hardening](OPTIMIZATION_HARDENING_COMPLETE.md) - Performance optimizations
+- [📊 Optimization Report](OPTIMIZATION_REPORT_COMPLETE.md) - Detailed optimization analysis
+- [🧪 Test Report](TEST_REPORT.md) - Comprehensive testing results
+- [🔍 Final Lint Assessment](FINAL_LINT_ASSESSMENT.md) - Code quality assessment
+- [🏗️ Final Build Status](FINAL_BUILD_STATUS.md) - Build configuration and status
+
+### 🎨 **Theme System**
+- [🎭 Theme Rotation Guide](THEME_ROTATION_GUIDE.md) - Automatic theme cycling
+- [🎨 Themes Optimized](THEMES_OPTIMIZED.md) - Theme system optimizations
+- [📱 Theme Panel Enhancements](THEME_PANEL_DRAGGING_ENHANCED.md) - Draggable theme panel
+- [🔄 Theme Selection Fixes](THEME_SELECTION_FIXED.md) - Theme selection improvements
+
+### 📱 **Mobile & Responsive**
+- [📱 Responsive Enhancements](RESPONSIVE_ENHANCEMENT_COMPLETED.md) - Mobile responsiveness
+- [🖥️ Local Deployment](LOCAL_DEPLOYMENT_COMPLETE.md) - Local server setup
+- [📐 Elements Enlarged](ALL_ELEMENTS_ENLARGED.md) - UI element sizing improvements
+
+### 🌤️ **Weather & Features**
+- [🌤️ Weather Optimization](WEATHER_OPTIMIZATION_COMPLETE.md) - Weather system improvements
+- [⏰ Time & Temperature](TIME_TEMP_ENLARGED.md) - Time display enhancements
+- [📍 Location Configuration](LOCATION_CONFIGURATION_VERIFIED.md) - Location services setup
+
+### 🛠️ **Development & Maintenance**
+- [✅ All Fixes Complete](ALL_FIXES_COMPLETE.md) - Comprehensive bug fixes
+- [🔄 All Updates Complete](ALL_UPDATED_COMPLETE.md) - Complete update history
+- [🧹 Cleanup Guide](CLEANUP.md) - Project cleanup and maintenance
+- [📝 Commit Validation](COMMIT_VALIDATION_COMPLETE.md) - Commit standards and validation
+
+### 📄 **Additional Resources**
+- [🚀 Launch Solution](LAUNCH_SOLUTION.md) - Application launch solutions
+- [🏷️ Name Changes](NAME_CHANGE_COMPLETED.md) - Project naming history
+- [📋 Status Section](STATUS_SECTION_ENLARGED.md) - Status display improvements
+- [🔄 Auto-Rotate Verification](AUTO_ROTATE_VERIFICATION_COMPLETE.md) - Theme rotation verification
+
+---
+
 ## 📄 **License**
 
 MIT License - Free to use and modify.
